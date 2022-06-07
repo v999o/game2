@@ -4,8 +4,13 @@ import config as c
 import sys
 from text_object import TextObject
 from button import Button
-from soldier import Soldier
-from soldier import Soldier_clicked
+from soldier import Soldier_blue
+from soldier import Soldier_blue_clicked
+from soldier import Soldier_red
+from soldier import Soldier_red_clicked
+from bgforbuttons import Bg_for_button
+from bgforbuttons import Move_button
+from bgforbuttons import Move_button_clicked
 from collections import defaultdict
 
 class Game:
@@ -20,6 +25,8 @@ class Game:
         self.pause = True
         self.counter = False
         self.remover = None
+        self.buttons = False
+        self.buttons_clicked = False
         pygame.mixer.init(44100, -16, 2, 4096)
         pygame.init()
         pygame.font.init()
@@ -32,33 +39,69 @@ class Game:
         self.mouse_handlers = []
 
     def handle_events(self):
+        if self.buttons == True:
+            if pygame.mouse.get_pos()[0] > 80 and pygame.mouse.get_pos()[0] < 160 and pygame.mouse.get_pos()[1] > 480 and pygame.mouse.get_pos()[1] < 560 and not self.buttons_clicked:
+                self.move_button_clicked = Move_button_clicked(80, 480)
+                self.objects.append(self.move_button_clicked)
+                self.buttons_clicked = True
+            elif (pygame.mouse.get_pos()[0] < 80 or pygame.mouse.get_pos()[0] > 160 or pygame.mouse.get_pos()[1] < 480 or pygame.mouse.get_pos()[1] > 560) and self.buttons_clicked:
+                self.objects.remove(self.move_button_clicked)
+                self.buttons_clicked = False
+
         def intersect(m, s):
             return m.left < s.right and m.right > s.left and m.top < s.bottom and m.bottom > s.top
         for event in pygame.event.get():
-            if event.type == pygame.K_KP_ENTER:
+            if event.type == pygame.KEYDOWN:
                 if not self.next_turn:
                     self.next_turn = True
                 else:
                     self.next_turn = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                # print(event.pos)
-                if self.counter == False:
-                    for i in self.objects:
-                        if i.collidepoint(event.pos[0], event.pos[1]):
-                            self.remover = i
-                            self.counter = True
-                    if self.counter == True:
-                        self.soldier_clicked = Soldier_clicked((event.pos[0]//40)*40, (event.pos[1]//40)*40)
-                        self.objects.append(self.soldier_clicked)
-                        self.objects.remove(self.remover)
+                if not self.next_turn:
+                    if self.counter == False:
+                        for i in self.objects:
+                            if i.collidepoint(event.pos[0], event.pos[1]):
+                                self.remover = i
+                                self.counter = True
+                        if self.counter == True:
+                            self.soldier_clicked = Soldier_blue_clicked((event.pos[0]//40)*40, (event.pos[1]//40)*40)
+                            self.objects.append(self.soldier_clicked)
+                            self.objects.remove(self.remover)
+                        else:
+                            self.soldier = Soldier_blue((event.pos[0]//40)*40, (event.pos[1]//40)*40)
+                            self.objects.append(self.soldier)
                     else:
-                        self.soldier = Soldier((event.pos[0]//40)*40, (event.pos[1]//40)*40)
+                        self.soldier = Soldier_blue((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
                         self.objects.append(self.soldier)
+                        self.objects.remove(self.soldier_clicked)
+                        self.counter = False
+
                 else:
-                    self.soldier = Soldier((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
-                    self.objects.append(self.soldier)
-                    self.objects.remove(self.soldier_clicked)
-                    self.counter = False
+                    if self.counter == False:
+                        for i in self.objects:
+                            if i.collidepoint(event.pos[0], event.pos[1]):
+                                self.remover = i
+                                self.counter = True
+                        if self.counter == True:
+                            self.soldier_clicked = Soldier_red_clicked((event.pos[0]//40)*40, (event.pos[1]//40)*40)
+                            self.objects.append(self.soldier_clicked)
+                            self.objects.remove(self.remover)
+                            self.bg_for_buttons = Bg_for_button(0, 440)
+                            self.move_button = Move_button(80, 480)
+                            self.objects.append(self.bg_for_buttons)
+                            self.objects.append(self.move_button)
+                            self.buttons = True
+                        else:
+                            self.soldier = Soldier_red((event.pos[0]//40)*40, (event.pos[1]//40)*40)
+                            self.objects.append(self.soldier)
+                    else:
+                        self.soldier = Soldier_red((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
+                        self.objects.append(self.soldier)
+                        self.objects.remove(self.soldier_clicked)
+                        self.objects.remove(self.bg_for_buttons)
+                        self.objects.remove(self.move_button)
+                        self.counter = False
+
                 '''if c == 1:
                     self.soldier = Soldier((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
                     self.objects.append(self.soldier)
