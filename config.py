@@ -7,6 +7,8 @@ background_image = 'game2images/g2field.png'
 gamesquare_image = 'game2images/g2fieldsquare.png'
 capital_image = 'game2images/g2capital.png'
 soldier_image = 'game2images/g2soldier.png'
+fieldsquare_blue_image = 'game2images/g2fieldsquare_blue.png'
+fieldsquare_red_image = 'game2images/g2fieldsquare_red.png'
 
 frame_rate = 90
 
@@ -27,11 +29,16 @@ paddle_speed = 6
 
 status_offset_y = 5
 
-text_color = colors.YELLOW1
+text_color1 = colors.BLUE
+text_color2 = colors.RED1
 initial_lives = 1
 lives_right_offset = 85
 lives_offset = screen_width - lives_right_offset
-score_offset = 5
+
+balance_blue_offset = 720
+income_blue_offset = 760
+balance_red_offset = 5
+income_red_offset = 40
 
 font_name = 'Arial'
 font_size = 20

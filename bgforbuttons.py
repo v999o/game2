@@ -22,3 +22,31 @@ class Move_button_clicked(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
+
+class Attack_button(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 80, 80, 'game2images/g2_attackbutton_1.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (self._rect.x, self._rect.y))
+
+class Attack_button_clicked(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 80, 80, 'game2images/g2_attackbutton_clicked.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (self._rect.x, self._rect.y))
+
+class Capture_button(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 80, 80, 'game2images/g2_capturebutton_1.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (self._rect.x, self._rect.y))
+
+class Capture_button_clicked(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 80, 80, 'game2images/g2_capturebutton_clicked.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (self._rect.x, self._rect.y))
