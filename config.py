@@ -4,8 +4,8 @@ screen_width = 800
 screen_height = 600
 
 background_image = 'game2images/g2field.png'
-gamesquare_image = 'game2images/g2fieldsquare.png'
-capital_image = 'game2images/g2capital.png'
+gamesquare_image = 'game2images/g2fieldsquare_v2.png'
+capital_image = 'game2images/g2capital_new.png'
 soldier_image = 'game2images/g2soldier.png'
 fieldsquare_blue_image = 'game2images/g2fieldsquare_blue.png'
 fieldsquare_red_image = 'game2images/g2fieldsquare_red.png'

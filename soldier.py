@@ -17,6 +17,9 @@ class Soldier(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+    def newturn(self):
+        self.move_left = 1
+
 class Soldier_blue(Soldier):
     def __init__(self, x, y):
         super().__init__(x, y, 'blue', 'game2images/g2soldier_blue.png')

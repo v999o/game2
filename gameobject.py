@@ -11,3 +11,6 @@ class GameObject:
 
     def collidepoint(self, x, y):
         return self._rect.collidepoint(x, y)
+
+    def newturn(self):
+        pass
