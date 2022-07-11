@@ -22,7 +22,7 @@ class Soldier(GameObject):
 
 class Soldier_blue(Soldier):
     def __init__(self, x, y):
-        super().__init__(x, y, 'blue', 'game2images/g2soldier_blue.png')
+        super().__init__(x, y, 'blue', 'game2images/g2soldier_blue_new.png')
 
 class Soldier_blue_clicked(Soldier):
     def __init__(self, x, y):

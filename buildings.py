@@ -4,7 +4,7 @@ from gameobject import GameObject
 
 class Capital_blue(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2capital_new.png')
+        super().__init__(x, y, 40, 40, 'game2images/g2capital_new_blue.png')
 
     def type(self):
         return 'capital'
@@ -30,7 +30,7 @@ class Capital_blue_clicked(GameObject):
 
 class Capital_red(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2capital_new.png')
+        super().__init__(x, y, 40, 40, 'game2images/g2capital_new_red.png')
 
     def type(self):
         return 'capital'
@@ -56,7 +56,7 @@ class Capital_red_clicked(GameObject):
 
 class Factory_red(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2factory_red.png')
+        super().__init__(x, y, 40, 40, 'game2images/g2factory_red_new.png')
 
     def color(self):
         return 'red'

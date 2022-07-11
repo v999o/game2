@@ -2,6 +2,19 @@ import pygame
 import config as c
 from gameobject import GameObject
 
+class Fieldsquare_neutral(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_v2.png')
+
+    def color(self):
+        return 'neutral'
+
+    def type(self):
+        return 'fieldsquare'
+
+    def draw(self, surface):
+        surface.blit(self.image, (self._rect.x, self._rect.y))
+
 class Fieldsquare_red(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_red.png')

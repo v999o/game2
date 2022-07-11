@@ -12,6 +12,9 @@ class TextObject:
     def type(self):
         return 'textobject'
 
+    def color(self):
+        pass
+
     def draw(self, surface, centralized=False):
         text_surface, self.rect = self.get_surface(self.text_func())
         if centralized:
@@ -24,7 +27,7 @@ class TextObject:
         pass
 
     def collidepoint(self):
-        pass
+        return False
 
     def get_surface(self, text):
         text_surface = self.font.render(text, False, self.color)

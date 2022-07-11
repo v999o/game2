@@ -4,7 +4,7 @@ from gameobject import GameObject
 
 class Spawn_soldier_button(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 80, 80, 'game2images/g2_spawn_soldier_button.png')
+        super().__init__(x, y, 50, 50, 'game2images/g2_spawn_soldier_button_new.png')
 
     def type(self):
         return 'button'
@@ -14,7 +14,7 @@ class Spawn_soldier_button(GameObject):
 
 class Spawn_soldier_button_clicked(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 80, 80, 'game2images/g2_spawn_soldier_button_clicked.png')
+        super().__init__(x, y, 50, 50, 'game2images/g2_spawn_soldier_button_new_clicked.png')
 
     def type(self):
         return 'button'
@@ -24,7 +24,7 @@ class Spawn_soldier_button_clicked(GameObject):
 
 class Spawn_factory_button(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 80, 80, 'game2images/g2_spawn_factory_button.png')
+        super().__init__(x, y, 50, 50, 'game2images/g2_spawn_factory_button_new.png')
 
     def type(self):
         return 'button'
@@ -34,7 +34,7 @@ class Spawn_factory_button(GameObject):
 
 class Spawn_factory_button_clicked(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 80, 80, 'game2images/g2_spawn_factory_button_clicked.png')
+        super().__init__(x, y, 50, 50, 'game2images/g2_spawn_factory_button_new_clicked.png')
 
     def type(self):
         return 'button'
