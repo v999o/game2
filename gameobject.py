@@ -14,3 +14,6 @@ class GameObject:
 
     def newturn(self):
         pass
+
+    def update(self):
+        pass

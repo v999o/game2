@@ -5,6 +5,8 @@ import sys
 from text_object import TextObject
 from button import Button
 from gameobject import GameObject
+from animations import Soldier_blue_click_anim
+from animations import Choose_fieldsquare_anim
 from soldier import Soldier_blue
 from soldier import Soldier_blue_clicked
 from soldier import Soldier_red
@@ -32,6 +34,7 @@ from field_objects import Fieldsquare_blue
 from field_objects import Fieldsquare_neutral
 from field_objects import Blue_turn_pointer
 from field_objects import Red_turn_pointer
+from field_objects import Fieldsquare_choose
 from collections import defaultdict
 
 class Game:
@@ -46,6 +49,7 @@ class Game:
         self.next_turn = False
         self.objects = []
         self.colors = []
+        self.anims = []
         self.pause = True
         self.counter = False
         self.remover = None
@@ -163,6 +167,21 @@ class Game:
                                              c.font_name,
                                              c.font_size)
         self.objects.append(self.income_label_red)
+
+    def create_soldier_click_anim(self, x, y):
+        anim = Soldier_blue_click_anim(x, y)
+        self.anims.append(anim)
+        self.objects.append(anim)
+
+    def fieldsquare_choose_anim(self, x, y):
+        anim = Choose_fieldsquare_anim(x, y)
+        self.anims.append(anim)
+        self.objects.append(anim)
+
+    def update(self):
+        for o in self.objects:
+            o.update()
+
 
     def handle_events(self):
         def create_soldier_buttons(a, b):
@@ -416,6 +435,7 @@ class Game:
                         if self.counter == True:
                             self.soldier_blue_clicked = Soldier_blue_clicked((event.pos[0]//40)*40, (event.pos[1]//40)*40)
                             self.objects.append(self.soldier_blue_clicked)
+                            self.create_soldier_click_anim((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
                             self.objects.remove(self.remover)
                             create_soldier_buttons(event.pos[0], event.pos[1])
                             self.soldier_buttons = True
@@ -443,6 +463,17 @@ class Game:
                         self.counter = False
                         self.is_move_button_clicked = False
                         self.soldier_actions = 'move_soldier'
+                        for i in self.objects:
+                            if i.type() != 'textobject' and i.type() != 'animation':
+
+
+                                if (i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 + 1
+                                    or i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 - 1
+                                    or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 + 1
+                                    or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 - 1) and not (
+                                        i._rect.x // 40 != self.soldier_blue_clicked._rect.x // 40 and i._rect.y // 40 != self.soldier_blue_clicked._rect.y // 40):
+                                    self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
+
                     elif self.is_attack_button_clicked:
                         self.objects.remove(self.bg_for_buttons)
                         self.objects.remove(self.move_button)
@@ -539,7 +570,6 @@ class Game:
                             if j.type() == 'fieldsquare' and j.collidepoint(event.pos[0], event.pos[1]) and j.color() == 'red':
                                 for i in self.objects:
                                     if (i.type() == 'factory' or i.type() == 'capital') and i.color() == 'red' and ((j._rect.x//40+1 == i._rect.x//40 and j._rect.y//40 == i._rect.y//40) or (j._rect.x//40-1 == i._rect.x//40 and j._rect.y//40 == i._rect.y//40) or (j._rect.x//40 == i._rect.x//40 and j._rect.y//40+1 == i._rect.y//40) or (j._rect.x//40 == i._rect.x//40 and j._rect.y//40-1 == i._rect.y//40)):
-                                        print(1)
                                         self.soldier_red = Soldier_red((event.pos[0] // 40) * 40, (event.pos[1] // 40) * 40)
                                         self.objects.append(self.soldier_red)
                                         self.capital_actions = 'none'
@@ -662,6 +692,11 @@ class Game:
                                     self.soldier_actions = 'none'
                                     self.counter = False
 
+        for anim in self.anims:
+            if anim.life <= 0:
+                self.anims.remove(anim)
+                self.objects.remove(anim)
+
 
     def draw(self):
         for o in self.objects:
@@ -677,12 +712,13 @@ class Game:
                 for x in range(0, 799, 40):
                     self.surface.blit(self.gamesquare_image, (x, y))'''
 
+
             #self.surface.blit(self.capital_image, (0, 280))
             #self.surface.blit(self.capital_image, (760, 280))
 
 
             self.handle_events()
-            # self.update()
+            self.update()
             self.draw()
 
             pygame.display.update()
