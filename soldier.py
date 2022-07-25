@@ -30,8 +30,8 @@ class Soldier_blue_clicked(Soldier):
 
 class Soldier_red(Soldier):
     def __init__(self, x, y):
-        super().__init__(x, y, 'red', 'game2images/g2soldier_red.png')
+        super().__init__(x, y, 'red', 'game2images/g2soldier_red_new.png')
 
 class Soldier_red_clicked(Soldier):
     def __init__(self, x, y):
-        super().__init__(x, y, 'red', 'game2images/g2soldier_red_clicked.png')
+        super().__init__(x, y, 'red', 'game2images/g2soldier_red_clickanim5.png')

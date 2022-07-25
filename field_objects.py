@@ -80,7 +80,7 @@ class Blue_turn_pointer(GameObject):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
     def type(self):
-        pass
+        return 'pointer'
 
 
 class Red_turn_pointer(GameObject):
@@ -94,5 +94,5 @@ class Red_turn_pointer(GameObject):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
     def type(self):
-        pass
+        return 'pointer'
 

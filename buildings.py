@@ -17,7 +17,7 @@ class Capital_blue(GameObject):
 
 class Capital_blue_clicked(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2capital_clicked.png')
+        super().__init__(x, y, 40, 40, 'game2images/g2capital_blue_clickanim5.png')
 
     def type(self):
         return 'capital'
