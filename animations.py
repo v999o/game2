@@ -95,3 +95,14 @@ class Capital_blue_click_anim(Animation):
 
     def anim_type(self):
         return 'capital_blue_click_anim'
+
+class Capital_red_click_anim(Animation):
+    def __init__(self, x, y):
+        super(Capital_red_click_anim, self).__init__(x, y, 'game2images/g2capital_red_clickanim_1.png',
+                                                     'game2images/g2capital_red_clickanim_2.png',
+                                                     'game2images/g2capital_red_clickanim_3.png',
+                                                     'game2images/g2capital_red_clickanim_4.png',
+                                                     'game2images/g2capital_red_clickanim_5.png', 25)
+
+    def anim_type(self):
+        return 'capital_red_click_anim'
