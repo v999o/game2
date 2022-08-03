@@ -1,6 +1,7 @@
 import pygame
 from gameobject import GameObject
 
+
 class Animation(GameObject):
     def __init__(self, x, y, i1, i2, i3, i4, i5, life):
         super(Animation, self).__init__(x, y, 40, 40, i1)
@@ -22,15 +23,15 @@ class Animation(GameObject):
         return self.life <= 0
 
     def draw(self, surface):
-        if self.life > (self.max_life//5)*4:
+        if self.life > (self.max_life // 5) * 4:
             surface.blit(self.image1, (self._rect.x, self._rect.y))
-        elif (self.max_life//5)*3 < self.life <= (self.max_life//5)*4:
+        elif (self.max_life // 5) * 3 < self.life <= (self.max_life // 5) * 4:
             surface.blit(self.image2, (self._rect.x, self._rect.y))
-        elif (self.max_life//5)*2 < self.life <= (self.max_life//5)*3:
+        elif (self.max_life // 5) * 2 < self.life <= (self.max_life // 5) * 3:
             surface.blit(self.image3, (self._rect.x, self._rect.y))
-        elif (self.max_life//5) < self.life <= (self.max_life//5)*2:
+        elif (self.max_life // 5) < self.life <= (self.max_life // 5) * 2:
             surface.blit(self.image4, (self._rect.x, self._rect.y))
-        elif self.life <= self.max_life//5:
+        elif self.life <= self.max_life // 5:
             surface.blit(self.image5, (self._rect.x, self._rect.y))
 
     def update(self):
@@ -50,13 +51,14 @@ class Soldier_blue_click_anim(Animation):
     def anim_type(self):
         return 'soldier_blue_click_anim'
 
+
 class Soldier_red_click_anim(Animation):
     def __init__(self, x, y):
         super(Soldier_red_click_anim, self).__init__(x, y, 'game2images/g2soldier_red_clickanim1.png',
-                                                      'game2images/g2soldier_red_clickanim2.png',
-                                                      'game2images/g2soldier_red_clickanim3.png',
-                                                      'game2images/g2soldier_red_clickanim4.png',
-                                                      'game2images/g2soldier_red_clickanim5.png', 25)
+                                                     'game2images/g2soldier_red_clickanim2.png',
+                                                     'game2images/g2soldier_red_clickanim3.png',
+                                                     'game2images/g2soldier_red_clickanim4.png',
+                                                     'game2images/g2soldier_red_clickanim5.png', 25)
 
     def anim_type(self):
         return 'soldier_red_click_anim'
@@ -85,6 +87,7 @@ class Fieldsquares_others_anim(Animation):
     def anim_type(self):
         return 'fieldsquare_other'
 
+
 class Capital_blue_click_anim(Animation):
     def __init__(self, x, y):
         super(Capital_blue_click_anim, self).__init__(x, y, 'game2images/g2capital_blue_clickanim1.png',
@@ -95,6 +98,7 @@ class Capital_blue_click_anim(Animation):
 
     def anim_type(self):
         return 'capital_blue_click_anim'
+
 
 class Capital_red_click_anim(Animation):
     def __init__(self, x, y):

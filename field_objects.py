@@ -1,6 +1,5 @@
-import pygame
-import config as c
 from gameobject import GameObject
+
 
 class Fieldsquare_neutral(GameObject):
     def __init__(self, x, y):
@@ -15,6 +14,7 @@ class Fieldsquare_neutral(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Fieldsquare_red(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_red.png')
@@ -27,6 +27,7 @@ class Fieldsquare_red(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
+
 
 class Fieldsquare_blue(GameObject):
     def __init__(self, x, y):
@@ -41,6 +42,7 @@ class Fieldsquare_blue(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Fieldsquare_choose(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_choose_anim5.png')
@@ -54,6 +56,7 @@ class Fieldsquare_choose(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Fieldsquare_other(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_anim_5.png')
@@ -66,7 +69,6 @@ class Fieldsquare_other(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
-
 
 
 class Blue_turn_pointer(GameObject):
@@ -95,4 +97,3 @@ class Red_turn_pointer(GameObject):
 
     def type(self):
         return 'pointer'
-

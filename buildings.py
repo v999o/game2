@@ -1,6 +1,5 @@
-import pygame
-import config as c
 from gameobject import GameObject
+
 
 class Capital_blue(GameObject):
     def __init__(self, x, y):
@@ -15,6 +14,7 @@ class Capital_blue(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Capital_blue_clicked(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2capital_blue_clickanim5.png')
@@ -27,6 +27,7 @@ class Capital_blue_clicked(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
+
 
 class Capital_red(GameObject):
     def __init__(self, x, y):
@@ -41,6 +42,7 @@ class Capital_red(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Capital_red_clicked(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2capital_red_clickanim_5.png')
@@ -53,6 +55,7 @@ class Capital_red_clicked(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
+
 
 class Factory_red(GameObject):
     def __init__(self, x, y):
@@ -67,6 +70,7 @@ class Factory_red(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+
 class Factory_blue(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 40, 40, 'game2images/g2factory_blue_new.png')
@@ -79,7 +83,3 @@ class Factory_blue(GameObject):
 
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
-
-
-
-

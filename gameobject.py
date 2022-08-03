@@ -1,6 +1,7 @@
 from pygame.rect import Rect
 import pygame
 
+
 class GameObject:
     def __init__(self, x, y, w, h, image):
         self._rect = Rect(x, y, w, h)
