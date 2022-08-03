@@ -178,10 +178,12 @@ class Game:
     def create_soldier_click_anim(self, x, y, color):
         if color == 'blue':
             anim = Soldier_blue_click_anim(x, y)
+            self.anims.append(anim)
+            self.objects.append(anim)
         elif color == 'red':
             anim = Soldier_red_click_anim(x, y)
-        self.anims.append(anim)
-        self.objects.append(anim)
+            self.anims.append(anim)
+            self.objects.append(anim)
 
     def fieldsquare_choose_anim(self, x, y):
         anim = Choose_fieldsquare_anim(x, y)
