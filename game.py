@@ -307,77 +307,56 @@ class Game:
         for i in self.objects:
             if i.type() == 'fieldsquare':
                 if color == 'blue':
-                    if (i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 + 1
-                        or i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 - 1
-                        or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 + 1
-                        or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 - 1) and not (
-                            i._rect.x // 40 != self.soldier_blue_clicked._rect.x // 40 and i._rect.y // 40 != self.soldier_blue_clicked._rect.y // 40):
-                        for obj in self.objects:
-                            if (
-                                    obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == i._rect.x and obj._rect.y == i._rect.y:
-                                self.is_building_intersection = True
-                        if not self.is_building_intersection:
-                            self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
-                        self.is_building_intersection = False
-                    else:
-                        for obj in self.objects:
-                            if (
-                                    obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == i._rect.x and obj._rect.y == i._rect.y:
-                                self.is_building_intersection = True
-                        if not self.is_building_intersection:
-                            self.fieldsquare_others_anim(i._rect.x, i._rect.y)
-                        self.is_building_intersection = False
+                    self.do_move_soldier_conditions(i, self.soldier_blue_clicked)
                 elif color == 'red':
-                    if (i._rect.x // 40 == self.soldier_red_clicked._rect.x // 40 + 1
-                        or i._rect.x // 40 == self.soldier_red_clicked._rect.x // 40 - 1
-                        or i._rect.y // 40 == self.soldier_red_clicked._rect.y // 40 + 1
-                        or i._rect.y // 40 == self.soldier_red_clicked._rect.y // 40 - 1) and not (
-                            i._rect.x // 40 != self.soldier_red_clicked._rect.x // 40 and i._rect.y // 40 != self.soldier_red_clicked._rect.y // 40):
-                        for obj in self.objects:
-                            if (
-                                    obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == i._rect.x and obj._rect.y == i._rect.y:
-                                self.is_building_intersection = True
-                        if not self.is_building_intersection:
-                            self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
-                        self.is_building_intersection = False
-                    else:
-                        for obj in self.objects:
-                            if (
-                                    obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == i._rect.x and obj._rect.y == i._rect.y:
-                                self.is_building_intersection = True
-                        if not self.is_building_intersection:
-                            self.fieldsquare_others_anim(i._rect.x, i._rect.y)
-                        self.is_building_intersection = False
+                    self.do_move_soldier_conditions(i, self.soldier_red_clicked)
             elif i.type() == 'capital' or i.type() == 'factory' or i.type() == 'soldier':
                 self.fieldsquare_others_anim(i._rect.x, i._rect.y)
+
+    def do_move_soldier_conditions(self, fieldsquare, soldier):
+        if (fieldsquare._rect.x // 40 == soldier._rect.x // 40 + 1
+            or fieldsquare._rect.x // 40 == soldier._rect.x // 40 - 1
+            or fieldsquare._rect.y // 40 == soldier._rect.y // 40 + 1
+            or fieldsquare._rect.y // 40 == soldier._rect.y // 40 - 1) and not (
+                fieldsquare._rect.x // 40 != soldier._rect.x // 40 and fieldsquare._rect.y // 40 != soldier._rect.y // 40):
+            for obj in self.objects:
+                if (
+                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == fieldsquare._rect.x and obj._rect.y == fieldsquare._rect.y:
+                    self.is_building_intersection = True
+            if not self.is_building_intersection:
+                self.fieldsquare_choose_anim(fieldsquare._rect.x, fieldsquare._rect.y)
+            self.is_building_intersection = False
+        else:
+            for obj in self.objects:
+                if (
+                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj._rect.x == fieldsquare._rect.x and obj._rect.y == fieldsquare._rect.y:
+                    self.is_building_intersection = True
+            if not self.is_building_intersection:
+                self.fieldsquare_others_anim(fieldsquare._rect.x, fieldsquare._rect.y)
+            self.is_building_intersection = False
 
     def attack_soldier_conditions(self, color):
         for i in self.objects:
             if color == 'blue':
-                if (i.type() == 'soldier' or i.type() == 'factory') and i.color() == 'red' and (
-                        i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 + 1
-                        or i._rect.x // 40 == self.soldier_blue_clicked._rect.x // 40 - 1
-                        or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 + 1
-                        or i._rect.y // 40 == self.soldier_blue_clicked._rect.y // 40 - 1) and not (
-                        i._rect.x // 40 != self.soldier_blue_clicked._rect.x // 40 and i._rect.y // 40 != self.soldier_blue_clicked._rect.y // 40):
-                    self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
-                elif i.type() != 'textobject' and i.type() != 'pointer' and i.type() != 'soldier':
-                    self.fieldsquare_others_anim(i._rect.x, i._rect.y)
+                self.do_attack_soldier_conditions(i, self.soldier_blue_clicked)
             elif color == 'red':
-                if (i.type() == 'soldier' or i.type() == 'factory') and i.color() == 'blue' and (
-                        i._rect.x // 40 == self.soldier_red_clicked._rect.x // 40 + 1
-                        or i._rect.x // 40 == self.soldier_red_clicked._rect.x // 40 - 1
-                        or i._rect.y // 40 == self.soldier_red_clicked._rect.y // 40 + 1
-                        or i._rect.y // 40 == self.soldier_red_clicked._rect.y // 40 - 1) and not (
-                        i._rect.x // 40 != self.soldier_red_clicked._rect.x // 40 and i._rect.y // 40 != self.soldier_red_clicked._rect.y // 40):
-                    self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
-                elif i.type() != 'textobject' and i.type() != 'pointer' and i.type() != 'soldier':
-                    self.fieldsquare_others_anim(i._rect.x, i._rect.y)
+                self.do_attack_soldier_conditions(i, self.soldier_red_clicked)
         for anim1 in self.anims[::-1]:
             if anim1.anim_type() == 'choose_fieldsquare':
                 for anim2 in self.anims[::-1]:
                     if anim2.anim_type() == 'fieldsquare_other' and anim1._rect.x == anim2._rect.x and anim1._rect.y == anim2._rect.y:
                         self.anims.remove(anim2)
+
+    def do_attack_soldier_conditions(self, i, soldier):
+        if (i.type() == 'soldier' or i.type() == 'factory') and i.color() == 'red' and (
+                i._rect.x // 40 == soldier._rect.x // 40 + 1
+                or i._rect.x // 40 == soldier._rect.x // 40 - 1
+                or i._rect.y // 40 == soldier._rect.y // 40 + 1
+                or i._rect.y // 40 == soldier._rect.y // 40 - 1) and not (
+                i._rect.x // 40 != soldier._rect.x // 40 and i._rect.y // 40 != soldier._rect.y // 40):
+            self.fieldsquare_choose_anim(i._rect.x, i._rect.y)
+        elif i.type() != 'textobject' and i.type() != 'pointer' and i.type() != 'soldier':
+            self.fieldsquare_others_anim(i._rect.x, i._rect.y)
 
     def handle_events(self):
         def create_soldier_buttons(a, b):
