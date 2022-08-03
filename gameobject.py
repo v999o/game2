@@ -18,3 +18,11 @@ class GameObject:
 
     def update(self):
         pass
+
+    @property
+    def x(self):
+        return self._rect.x
+
+    @property
+    def y(self):
+        return self._rect.y
