@@ -418,50 +418,42 @@ class Game:
             self.objects.append(self.capital_clicked)
             self.create_capital_click_anim(self.capital_clicked.x, self.capital_clicked.y, color)
 
-        if self.soldier_buttons == True:
-            if self.move_button_clicked.collidepoint(pygame.mouse.get_pos()[0],
-                                                     pygame.mouse.get_pos()[1]) and not self.is_move_button_clicked:
+        mouse_x = pygame.mouse.get_pos()[0]
+        mouse_y = pygame.mouse.get_pos()[1]
+        if self.soldier_buttons:
+            if self.move_button_clicked.collidepoint(mouse_x, mouse_y) and not self.is_move_button_clicked:
                 # if pygame.mouse.get_pos()[0] > 80 and pygame.mouse.get_pos()[0] < 160 and pygame.mouse.get_pos()[1] > 480 and pygame.mouse.get_pos()[1] < 560 and not self.buttons_clicked:
                 # self.move_button_clicked = Move_button_clicked(80, 480)
                 self.objects.append(self.move_button_clicked)
                 self.is_move_button_clicked = True
-            elif not self.move_button_clicked.collidepoint(pygame.mouse.get_pos()[0],
-                                                           pygame.mouse.get_pos()[1]) and self.is_move_button_clicked:
+            elif not self.move_button_clicked.collidepoint(mouse_x, mouse_y) and self.is_move_button_clicked:
                 # elif (pygame.mouse.get_pos()[0] < 80 or pygame.mouse.get_pos()[0] > 160 or pygame.mouse.get_pos()[1] < 480 or pygame.mouse.get_pos()[1] > 560) and self.buttons_clicked:
                 self.objects.remove(self.move_button_clicked)
                 self.is_move_button_clicked = False
-            if self.attack_button.collidepoint(pygame.mouse.get_pos()[0],
-                                               pygame.mouse.get_pos()[1]) and not self.is_attack_button_clicked:
+            if self.attack_button.collidepoint(mouse_x, mouse_y) and not self.is_attack_button_clicked:
                 self.objects.append(self.attack_button_clicked)
                 self.is_attack_button_clicked = True
-            elif not self.attack_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and self.is_attack_button_clicked:
+            elif not self.attack_button_clicked.collidepoint(mouse_x, mouse_y) and self.is_attack_button_clicked:
                 self.objects.remove(self.attack_button_clicked)
                 self.is_attack_button_clicked = False
-            if self.capture_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and not self.is_capture_button_clicked:
+            if self.capture_button_clicked.collidepoint(mouse_x, mouse_y) and not self.is_capture_button_clicked:
                 self.objects.append(self.capture_button_clicked)
                 self.is_capture_button_clicked = True
-            elif not self.capture_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and self.is_capture_button_clicked:
+            elif not self.capture_button_clicked.collidepoint(mouse_x, mouse_y) and self.is_capture_button_clicked:
                 self.objects.remove(self.capture_button_clicked)
                 self.is_capture_button_clicked = False
 
-        if self.capital_buttons == True:
-            if self.spawn_soldier_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and not self.is_spawn_soldier_button_clicked:
+        if self.capital_buttons:
+            if self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.is_spawn_soldier_button_clicked:
                 self.objects.append(self.spawn_soldier_button_clicked)
                 self.is_spawn_soldier_button_clicked = True
-            elif not self.spawn_soldier_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and self.is_spawn_soldier_button_clicked:
+            elif not self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and self.is_spawn_soldier_button_clicked:
                 self.objects.remove(self.spawn_soldier_button_clicked)
                 self.is_spawn_soldier_button_clicked = False
-            if self.spawn_factory_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and not self.is_spawn_factory_button_clicked:
+            if self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and not self.is_spawn_factory_button_clicked:
                 self.objects.append(self.spawn_factory_button_clicked)
                 self.is_spawn_factory_button_clicked = True
-            elif not self.spawn_factory_button_clicked.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[
-                1]) and self.is_spawn_factory_button_clicked:
+            elif not self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and self.is_spawn_factory_button_clicked:
                 self.objects.remove(self.spawn_factory_button_clicked)
                 self.is_spawn_factory_button_clicked = False
 
