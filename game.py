@@ -778,7 +778,6 @@ class Game:
                                 if i.type() == 'factory' and i.color() == 'blue' and i.collidepoint(mouse_x, mouse_y):
                                     self.objects.remove(i)
                                     self.income_blue -= 6
-                                    self.objects.remove(i)
                                     soldier_red = Soldier_red(self.soldier_red_clicked.x,
                                                               self.soldier_red_clicked.y)
                                     soldier_red.move_left -= 1
