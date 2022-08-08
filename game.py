@@ -580,9 +580,7 @@ class Game:
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 10
                                 break
-                        for i in self.objects[::-1]:
-                            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                self.objects.remove(i)
+                        self.delete_fieldsquares()
                     elif self.capital_actions == 'spawn_factory' and self.balance_blue >= 12:
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and i.collidepoint(mouse_x, mouse_y):
@@ -592,9 +590,7 @@ class Game:
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 12
                                 self.income_blue += 6
-                        for i in self.objects[::-1]:
-                            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                self.objects.remove(i)
+                        self.delete_fieldsquares()
 
                     elif self.is_move_button_clicked:
                         self.is_soldier_buttons_clicked('is_move_button_clicked')
@@ -635,9 +631,7 @@ class Game:
                                 self.objects.append(soldier_blue)
                                 self.objects.remove(self.soldier_blue_clicked)
                                 self.soldier_actions = 'none'
-                                for o2 in self.objects[::-1]:
-                                    if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
-                                        self.objects.remove(o2)
+                                self.delete_fieldsquares()
 
                     elif self.soldier_actions == 'attack_soldier':
                         for i in self.objects:
@@ -653,9 +647,7 @@ class Game:
                                         self.objects.remove(self.soldier_blue_clicked)
                                         self.soldier_actions = 'none'
                                         self.counter = False
-                                        for o2 in self.objects[::-1]:
-                                            if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
-                                                self.objects.remove(o2)
+                                        self.delete_fieldsquares()
                                         break
                                     if j.type() == 'soldier' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
@@ -666,9 +658,7 @@ class Game:
                                         self.objects.remove(self.soldier_blue_clicked)
                                         self.soldier_actions = 'none'
                                         self.counter = False
-                                        for o2 in self.objects[::-1]:
-                                            if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
-                                                self.objects.remove(o2)
+                                        self.delete_fieldsquares()
                                         break
 
                     elif self.soldier_actions == 'capture_soldier':
@@ -695,9 +685,7 @@ class Game:
                         self.objects.remove(self.soldier_blue_clicked)
                         self.soldier_actions = 'none'
                         self.counter = False
-                        for i in self.objects[::-1]:
-                            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                self.objects.remove(i)
+                        self.delete_fieldsquares()
 
                     elif not self.counter:
                         for i in self.objects:
