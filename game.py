@@ -686,7 +686,7 @@ class Game:
                     elif not self.counter:
                         for i in self.objects:
                             if isinstance(i, Soldier):
-                                if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'blue' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
+                                if i.collidepoint(mouse_x, mouse_y) and i.color() == 'blue' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
                                     self.remover = i
                                     self.counter = True
                         if self.counter and self.soldier_actions == 'none':
@@ -821,10 +821,10 @@ class Game:
                     elif not self.counter:
                         for i in self.objects:
                             if isinstance(i, Soldier):
-                                if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'red' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
+                                if i.collidepoint(mouse_x, mouse_y) and i.color() == 'red' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
                                     self.remover = i
                                     self.counter = True
-                        if self.counter:  # todo - это же никогда не работает!
+                        if self.counter:
                             self.soldier_red_clicked = Soldier_red_clicked((mouse_x // 40) * 40,
                                                                            (mouse_y // 40) * 40)
                             self.objects.append(self.soldier_red_clicked)
