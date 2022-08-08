@@ -1,3 +1,5 @@
+from typing import List, Union
+
 import pygame
 import config as c
 from text_object import TextObject
@@ -7,6 +9,7 @@ from animations import Choose_fieldsquare_anim
 from animations import Fieldsquares_others_anim
 from animations import Capital_blue_click_anim
 from animations import Capital_red_click_anim
+from soldier import Soldier
 from soldier import Soldier_blue
 from soldier import Soldier_blue_clicked
 from soldier import Soldier_red
@@ -37,9 +40,12 @@ from field_objects import Red_turn_pointer
 from field_objects import Fieldsquare_choose
 from field_objects import Fieldsquare_other
 from collections import defaultdict
+from gameobject import GameObject
 
 
 class Game:
+    objects: List[Union[GameObject]]
+
     def __init__(self, caption, width, height, back_image_filename, gamesquare_image_filename, capital_image_filename,
                  soldier_image_filename, fieldsquare_red_image_filename, fieldsquare_blue_image_filename, frame_rate):
         self.background_image = pygame.image.load(back_image_filename)
@@ -325,16 +331,14 @@ class Game:
             or fieldsquare.y // 40 == soldier.y // 40 - 1) and not (
                 fieldsquare.x // 40 != soldier.x // 40 and fieldsquare.y // 40 != soldier.y // 40):
             for obj in self.objects:
-                if (
-                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == fieldsquare.x and obj.y == fieldsquare.y:
+                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == fieldsquare.x and obj.y == fieldsquare.y:
                     self.is_building_intersection = True
             if not self.is_building_intersection:
                 self.fieldsquare_choose_anim(fieldsquare.x, fieldsquare.y)
             self.is_building_intersection = False
         else:
             for obj in self.objects:
-                if (
-                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == fieldsquare.x and obj.y == fieldsquare.y:
+                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == fieldsquare.x and obj.y == fieldsquare.y:
                     self.is_building_intersection = True
             if not self.is_building_intersection:
                 self.fieldsquare_others_anim(fieldsquare.x, fieldsquare.y)
@@ -697,9 +701,10 @@ class Game:
 
                     elif not self.counter:
                         for i in self.objects:
-                            if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'blue' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
-                                self.remover = i
-                                self.counter = True
+                            if isinstance(i, Soldier):
+                                if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'blue' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
+                                    self.remover = i
+                                    self.counter = True
                         if self.counter and self.soldier_actions == 'none':
                             self.soldier_blue_clicked = Soldier_blue_clicked((mouse_x // 40) * 40,
                                                                              (mouse_y // 40) * 40)
@@ -832,9 +837,10 @@ class Game:
                                     self.counter = False
                     elif not self.counter:
                         for i in self.objects:
-                            if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'red' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
-                                self.remover = i
-                                self.counter = True
+                            if isinstance(i, Soldier):
+                                if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'red' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
+                                    self.remover = i
+                                    self.counter = True
                         if self.counter:  # todo - это же никогда не работает!
                             self.soldier_red_clicked = Soldier_red_clicked((mouse_x // 40) * 40,
                                                                            (mouse_y // 40) * 40)
