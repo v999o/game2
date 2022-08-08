@@ -310,19 +310,19 @@ class Game:
         self.counter = False
 
     def delete_fieldsquares(self):
-        for i in self.objects[::-1]:
-            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                self.objects.remove(i)
+        for obj in self.objects[::-1]:
+            if obj.type() == 'choose_fieldsquare' or obj.type() == 'fieldsquare_other':
+                self.objects.remove(obj)
 
     def move_soldier_conditions(self, color):
-        for i in self.objects:
-            if i.type() == 'fieldsquare':
+        for obj in self.objects:
+            if obj.type() == 'fieldsquare':
                 if color == 'blue':
-                    self.do_move_soldier_conditions(i, self.soldier_blue_clicked)
+                    self.do_move_soldier_conditions(obj, self.soldier_blue_clicked)
                 elif color == 'red':
-                    self.do_move_soldier_conditions(i, self.soldier_red_clicked)
-            elif i.type() == 'capital' or i.type() == 'factory' or i.type() == 'soldier':
-                self.fieldsquare_others_anim(i.x, i.y)
+                    self.do_move_soldier_conditions(obj, self.soldier_red_clicked)
+            elif obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier':
+                self.fieldsquare_others_anim(obj.x, obj.y)
 
     def do_move_soldier_conditions(self, fieldsquare, soldier):
         if (fieldsquare.x // 40 == soldier.x // 40 + 1
@@ -483,7 +483,7 @@ class Game:
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
                         for j in self.objects:
-                            if (j.type() == 'factory' or j.type() == 'capital') and j.color() == 'blue':
+                            if j.type() in ['factory', 'capital'] and j.color() == 'blue':
                                 for i in self.objects:
                                     if i.type() == 'fieldsquare':
                                         if i.color() == 'blue' and ((
@@ -492,8 +492,7 @@ class Game:
                                                                             j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
                                                                             j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
                                             for obj in self.objects:
-                                                if (
-                                                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == i.x and obj.y == i.y:
+                                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                                     self.is_building_intersection = True
                                             if not self.is_building_intersection:
                                                 if self.s == 0:
@@ -507,13 +506,12 @@ class Game:
                                         else:
                                             if self.s == 0:
                                                 for obj in self.objects:
-                                                    if (
-                                                            obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == i.x and obj.y == i.y:
+                                                    if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                                         self.is_building_intersection = True
                                                 if not self.is_building_intersection:
                                                     self.fieldsquare_others_anim(i.x, i.y)
                                                 self.is_building_intersection = False
-                                    elif i.type() == 'capital' or i.type() == 'factory' or i.type() == 'soldier':
+                                    elif i.type() in ['capital', 'factory', 'soldier']:
                                         if self.s == 0:
                                             self.fieldsquare_others_anim(i.x, i.y)
                                 self.s += 1
@@ -528,7 +526,7 @@ class Game:
                     elif self.capital_buttons and self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_factory_button_clicked')
                         for j in self.objects:
-                            if (j.type() == 'factory' or j.type() == 'capital') and j.color() == 'blue':
+                            if j.type() in ['factory', 'capital'] and j.color() == 'blue':
                                 for i in self.objects:
                                     if i.type() == 'fieldsquare':
                                         if i.color() == 'blue' and ((
@@ -537,8 +535,7 @@ class Game:
                                                                             j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
                                                                             j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
                                             for obj in self.objects:
-                                                if (
-                                                        obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == i.x and obj.y == i.y:
+                                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                                     self.is_building_intersection = True
                                             if not self.is_building_intersection:
                                                 if self.s == 0:
@@ -552,13 +549,12 @@ class Game:
                                         else:
                                             if self.s == 0:
                                                 for obj in self.objects:
-                                                    if (
-                                                            obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier') and obj.x == i.x and obj.y == i.y:
+                                                    if  obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                                         self.is_building_intersection = True
                                                 if not self.is_building_intersection:
                                                     self.fieldsquare_others_anim(i.x, i.y)
                                                 self.is_building_intersection = False
-                                    elif i.type() == 'capital' or i.type() == 'factory' or i.type() == 'soldier':
+                                    elif i.type() in ['capital', 'factory', 'soldier']:
                                         if self.s == 0:
                                             self.fieldsquare_others_anim(i.x, i.y)
                                 self.s += 1
