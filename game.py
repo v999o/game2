@@ -131,6 +131,9 @@ class Game:
         self.fieldsquare_red = Fieldsquare_red(0 * 40, 8 * 40)
         self.objects.append(self.fieldsquare_red)
 
+        self.soldier_blue_clicked = None
+        self.soldier_red_clicked = None
+
         pygame.mixer.init(44100, -16, 2, 4096)
         pygame.init()
         pygame.font.init()
@@ -146,34 +149,34 @@ class Game:
         self.mouse_handlers = []
 
     def create_labels(self):
-        self.balance_label_blue = TextObject(c.balance_blue_offset,
-                                             c.status_offset_y,
-                                             lambda: f'$: {self.balance_blue}',
-                                             c.text_color1,
-                                             c.font_name,
-                                             c.font_size)
-        self.objects.append(self.balance_label_blue)
-        self.income_label_blue = TextObject(c.income_blue_offset,
-                                            c.status_offset_y,
-                                            lambda: f'+: {self.income_blue}',
-                                            c.text_color1,
-                                            c.font_name,
-                                            c.font_size)
-        self.objects.append(self.income_label_blue)
-        self.balance_label_red = TextObject(c.balance_red_offset,
-                                            c.status_offset_y,
-                                            lambda: f'$: {self.balance_red}',
-                                            c.text_color2,
-                                            c.font_name,
-                                            c.font_size)
-        self.objects.append(self.balance_label_red)
-        self.income_label_red = TextObject(c.income_red_offset,
-                                           c.status_offset_y,
-                                           lambda: f'+: {self.income_red}',
-                                           c.text_color2,
-                                           c.font_name,
-                                           c.font_size)
-        self.objects.append(self.income_label_red)
+        balance_label_blue = TextObject(c.balance_blue_offset,
+                                        c.status_offset_y,
+                                        lambda: f'$: {self.balance_blue}',
+                                        c.text_color1,
+                                        c.font_name,
+                                        c.font_size)
+        self.objects.append(balance_label_blue)
+        income_label_blue = TextObject(c.income_blue_offset,
+                                       c.status_offset_y,
+                                       lambda: f'+: {self.income_blue}',
+                                       c.text_color1,
+                                       c.font_name,
+                                       c.font_size)
+        self.objects.append(income_label_blue)
+        balance_label_red = TextObject(c.balance_red_offset,
+                                       c.status_offset_y,
+                                       lambda: f'$: {self.balance_red}',
+                                       c.text_color2,
+                                       c.font_name,
+                                       c.font_size)
+        self.objects.append(balance_label_red)
+        income_label_red = TextObject(c.income_red_offset,
+                                      c.status_offset_y,
+                                      lambda: f'+: {self.income_red}',
+                                      c.text_color2,
+                                      c.font_name,
+                                      c.font_size)
+        self.objects.append(income_label_red)
 
     def create_soldier_click_anim(self, x, y, color):
         if color == 'blue':
@@ -198,6 +201,8 @@ class Game:
             anim = Capital_blue_click_anim(x, y)
         elif color == 'red':
             anim = Capital_red_click_anim(x, y)
+        else:
+            return
         self.anims.append(anim)
         self.objects.append(anim)
 
@@ -263,12 +268,12 @@ class Game:
 
     def escape_soldier_1(self, color):
         if color == 'blue':
-            self.soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
-            self.objects.append(self.soldier_blue)
+            soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
+            self.objects.append(soldier_blue)
             self.objects.remove(self.soldier_blue_clicked)
         elif color == 'red':
-            self.soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
-            self.objects.append(self.soldier_red)
+            soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
+            self.objects.append(soldier_red)
             self.objects.remove(self.soldier_red_clicked)
         self.objects.remove(self.bg_for_buttons)
         self.objects.remove(self.move_button)
@@ -288,12 +293,12 @@ class Game:
 
     def escape_soldier_2(self, color):
         if color == 'blue':
-            self.soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
-            self.objects.append(self.soldier_blue)
+            soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
+            self.objects.append(soldier_blue)
             self.objects.remove(self.soldier_blue_clicked)
         elif color == 'red':
-            self.soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
-            self.objects.append(self.soldier_red)
+            soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
+            self.objects.append(soldier_red)
             self.objects.remove(self.soldier_red_clicked)
         self.soldier_actions = 'none'
         self.counter = False
@@ -566,8 +571,8 @@ class Game:
                         for j in self.objects:
                             if j.type() == 'choose_fieldsquare' and j.collidepoint(mouse_x, mouse_y):
                                 self.objects.remove(self.capital_clicked)
-                                self.soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                self.objects.append(self.soldier_blue)
+                                soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                self.objects.append(soldier_blue)
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 10
                                 break
@@ -578,8 +583,8 @@ class Game:
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and i.collidepoint(mouse_x, mouse_y):
                                 self.objects.remove(self.capital_clicked)
-                                self.factory_blue = Factory_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                self.objects.append(self.factory_blue)
+                                factory_blue = Factory_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                self.objects.append(factory_blue)
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 12
                                 self.income_blue += 6
@@ -621,14 +626,14 @@ class Game:
                     elif self.soldier_actions == 'move_soldier':
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and mouse_x // 40 == i.x // 40 and mouse_y // 40 == i.y // 40:
-                                self.soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                self.soldier_blue.move_left -= 1
-                                self.objects.append(self.soldier_blue)
+                                soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                soldier_blue.move_left -= 1
+                                self.objects.append(soldier_blue)
                                 self.objects.remove(self.soldier_blue_clicked)
                                 self.soldier_actions = 'none'
-                                for i in self.objects[::-1]:
-                                    if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                        self.objects.remove(i)
+                                for o2 in self.objects[::-1]:
+                                    if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
+                                        self.objects.remove(o2)
 
                     elif self.soldier_actions == 'attack_soldier':
                         for i in self.objects:
@@ -637,31 +642,30 @@ class Game:
                                     if j.type() == 'factory' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
                                         self.income_red -= 6
-                                        self.soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
-                                                                         self.soldier_blue_clicked.y)
-                                        self.soldier_blue.move_left -= 1
-                                        self.objects.append(self.soldier_blue)
+                                        soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
+                                                                    self.soldier_blue_clicked.y)
+                                        soldier_blue.move_left -= 1
+                                        self.objects.append(soldier_blue)
                                         self.objects.remove(self.soldier_blue_clicked)
                                         self.soldier_actions = 'none'
                                         self.counter = False
-                                        for i in self.objects[::-1]:
-                                            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                                self.objects.remove(i)
+                                        for o2 in self.objects[::-1]:
+                                            if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
+                                                self.objects.remove(o2)
                                         break
                                     if j.type() == 'soldier' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        self.soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
-                                                                         self.soldier_blue_clicked.y)
-                                        self.soldier_blue.move_left -= 1
-                                        self.objects.append(self.soldier_blue)
+                                        soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
+                                                                    self.soldier_blue_clicked.y)
+                                        soldier_blue.move_left -= 1
+                                        self.objects.append(soldier_blue)
                                         self.objects.remove(self.soldier_blue_clicked)
                                         self.soldier_actions = 'none'
                                         self.counter = False
-                                        for i in self.objects[::-1]:
-                                            if i.type() == 'choose_fieldsquare' or i.type() == 'fieldsquare_other':
-                                                self.objects.remove(i)
+                                        for o2 in self.objects[::-1]:
+                                            if o2.type() == 'choose_fieldsquare' or o2.type() == 'fieldsquare_other':
+                                                self.objects.remove(o2)
                                         break
-
 
                     elif self.soldier_actions == 'capture_soldier':
                         for i in self.objects:
@@ -680,10 +684,10 @@ class Game:
                                         self.objects.remove(j)
                                         self.income_blue += 1
                                         break
-                        self.soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
-                                                         self.soldier_blue_clicked.y)
-                        self.soldier_blue.move_left -= 1
-                        self.objects.append(self.soldier_blue)
+                        soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
+                                                    self.soldier_blue_clicked.y)
+                        soldier_blue.move_left -= 1
+                        self.objects.append(soldier_blue)
                         self.objects.remove(self.soldier_blue_clicked)
                         self.soldier_actions = 'none'
                         self.counter = False
@@ -696,7 +700,7 @@ class Game:
                             if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'blue' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
                                 self.remover = i
                                 self.counter = True
-                        if self.counter == True and self.soldier_actions == 'none':
+                        if self.counter and self.soldier_actions == 'none':
                             self.soldier_blue_clicked = Soldier_blue_clicked((mouse_x // 40) * 40,
                                                                              (mouse_y // 40) * 40)
                             self.objects.append(self.soldier_blue_clicked)
@@ -724,9 +728,9 @@ class Game:
                                                                                                                             j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
                                                                                                                             j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
                                                                                                                             j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
-                                        self.soldier_red = Soldier_red((mouse_x // 40) * 40,
-                                                                       (mouse_y // 40) * 40)
-                                        self.objects.append(self.soldier_red)
+                                        soldier_red = Soldier_red((mouse_x // 40) * 40,
+                                                                  (mouse_y // 40) * 40)
+                                        self.objects.append(soldier_red)
                                         self.capital_actions = 'none'
                                         self.balance_red -= 10
                                         self.objects.remove(self.capital_clicked)
@@ -737,8 +741,8 @@ class Game:
                             if i.type() == 'fieldsquare' and i.collidepoint(mouse_x,
                                                                             mouse_y) and i.color() == 'red':
                                 self.objects.remove(self.capital_clicked)
-                                self.factory_red = Factory_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                self.objects.append(self.factory_red)
+                                factory_red = Factory_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                self.objects.append(factory_red)
                                 self.capital_actions = 'none'
                                 self.balance_red -= 12
                                 self.income_red += 6
@@ -765,9 +769,9 @@ class Game:
 
                             for i in self.objects:
                                 if i.type() == 'fieldsquare' and i.collidepoint(mouse_x, mouse_y):
-                                    self.soldier_red = Soldier_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                    self.soldier_red.move_left -= 1
-                                    self.objects.append(self.soldier_red)
+                                    soldier_red = Soldier_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                    soldier_red.move_left -= 1
+                                    self.objects.append(soldier_red)
                                     self.objects.remove(self.soldier_red_clicked)
                                     self.soldier_actions = 'none'
 
@@ -782,20 +786,20 @@ class Game:
                                     self.objects.remove(i)
                                     self.income_blue -= 6
                                     self.objects.remove(i)
-                                    self.soldier_red = Soldier_red(self.soldier_red_clicked.x,
-                                                                   self.soldier_red_clicked.y)
-                                    self.soldier_red.move_left -= 1
-                                    self.objects.append(self.soldier_red)
+                                    soldier_red = Soldier_red(self.soldier_red_clicked.x,
+                                                              self.soldier_red_clicked.y)
+                                    soldier_red.move_left -= 1
+                                    self.objects.append(soldier_red)
                                     self.objects.remove(self.soldier_red_clicked)
                                     self.soldier_actions = 'none'
                                     self.counter = False
                                 if i.type() == 'soldier' and i.color() == 'red' and i.collidepoint(mouse_x,
                                                                                                    mouse_y):
                                     self.objects.remove(i)
-                                    self.soldier_red = Soldier_red(self.soldier_red_clicked.x,
-                                                                   self.soldier_red_clicked.y)
-                                    self.soldier_blue.move_left -= 1
-                                    self.objects.append(self.soldier_red)
+                                    soldier_red = Soldier_red(self.soldier_red_clicked.x,
+                                                              self.soldier_red_clicked.y)
+                                    soldier_red.move_left -= 1
+                                    self.objects.append(soldier_red)
                                     self.objects.remove(self.soldier_red_clicked)
                                     self.soldier_actions = 'none'
                                     self.counter = False
@@ -814,24 +818,24 @@ class Game:
                                     self.fieldsquare_red = Fieldsquare_red(mouse_x // 40 * 40,
                                                                            mouse_y // 40 * 40)
                                     self.objects.append(self.fieldsquare_red)
-                                    for i in self.objects:
-                                        if i.type() == 'fieldsquare' and i.color() == 'neutral' and i.x // 40 == \
-                                                mouse_x // 40 and i.y // 40 == mouse_y // 40:
-                                            self.objects.remove(i)
-                                    self.soldier_red = Soldier_red(self.soldier_red_clicked.x,
-                                                                   self.soldier_red_clicked.y)
-                                    self.soldier_red.move_left -= 1
-                                    self.objects.append(self.soldier_red)
+                                    for o2 in self.objects:
+                                        if o2.type() == 'fieldsquare' and o2.color() == 'neutral' and o2.x // 40 == \
+                                                mouse_x // 40 and o2.y // 40 == mouse_y // 40:
+                                            self.objects.remove(o2)
+                                    soldier_red = Soldier_red(self.soldier_red_clicked.x,
+                                                              self.soldier_red_clicked.y)
+                                    soldier_red.move_left -= 1
+                                    self.objects.append(soldier_red)
                                     self.objects.remove(self.soldier_red_clicked)
                                     self.income_red += 1
                                     self.soldier_actions = 'none'
                                     self.counter = False
-                    elif self.counter == False:
+                    elif not self.counter:
                         for i in self.objects:
                             if i.type() == 'soldier' and i.collidepoint(mouse_x, mouse_y) and i.color() == 'red' and i.move_left == 1 and self.capital_actions == 'none' and not self.capital_buttons:
                                 self.remover = i
                                 self.counter = True
-                        if self.counter == True:
+                        if self.counter:  # todo - это же никогда не работает!
                             self.soldier_red_clicked = Soldier_red_clicked((mouse_x // 40) * 40,
                                                                            (mouse_y // 40) * 40)
                             self.objects.append(self.soldier_red_clicked)
@@ -843,11 +847,11 @@ class Game:
         for anim in self.anims[::-1]:
             if anim.finished():
                 if anim.anim_type() == 'fieldsquare_other':
-                    self.fieldsquare_other = Fieldsquare_other(anim.x, anim.y)
-                    self.objects.append(self.fieldsquare_other)
+                    fieldsquare_other = Fieldsquare_other(anim.x, anim.y)
+                    self.objects.append(fieldsquare_other)
                 elif anim.anim_type() == 'choose_fieldsquare':
-                    self.fieldsquare_choose = Fieldsquare_choose(anim.x, anim.y)
-                    self.objects.append(self.fieldsquare_choose)
+                    fieldsquare_choose = Fieldsquare_choose(anim.x, anim.y)
+                    self.objects.append(fieldsquare_choose)
                 self.anims.remove(anim)
                 self.objects.remove(anim)
 
