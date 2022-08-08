@@ -1,6 +1,5 @@
-import pygame
-import config as c
 from gameobject import GameObject
+
 
 class Bg_for_button(GameObject):
     def __init__(self, x, y):
@@ -11,6 +10,7 @@ class Bg_for_button(GameObject):
 
     def type(self):
         pass
+
 
 class Bg_for_buttons_capital(GameObject):
     def __init__(self, x, y):
@@ -33,6 +33,7 @@ class Move_button(GameObject):
     def type(self):
         pass
 
+
 class Move_button_clicked(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 50, 50, 'game2images/g2_movebutton_2_clicked.png')
@@ -42,6 +43,7 @@ class Move_button_clicked(GameObject):
 
     def type(self):
         pass
+
 
 class Attack_button(GameObject):
     def __init__(self, x, y):
@@ -53,6 +55,7 @@ class Attack_button(GameObject):
     def type(self):
         pass
 
+
 class Attack_button_clicked(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 50, 50, 'game2images/g2_attackbutton_2_clicked.png')
@@ -63,6 +66,7 @@ class Attack_button_clicked(GameObject):
     def type(self):
         pass
 
+
 class Capture_button(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y, 50, 50, 'game2images/g2_capturebutton_2.png')
@@ -72,6 +76,7 @@ class Capture_button(GameObject):
 
     def type(self):
         pass
+
 
 class Capture_button_clicked(GameObject):
     def __init__(self, x, y):

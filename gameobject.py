@@ -1,6 +1,7 @@
 from pygame.rect import Rect
 import pygame
 
+
 class GameObject:
     def __init__(self, x, y, w, h, image):
         self._rect = Rect(x, y, w, h)
@@ -17,3 +18,11 @@ class GameObject:
 
     def update(self):
         pass
+
+    @property
+    def x(self):
+        return self._rect.x
+
+    @property
+    def y(self):
+        return self._rect.y
