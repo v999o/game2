@@ -5,10 +5,19 @@ import pygame
 class GameObject:
     def __init__(self, x, y, w, h, image):
         self._rect = Rect(x, y, w, h)
-        self.image = pygame.image.load(image)
+        if image is None:
+            self.image = None
+        else:
+            self.image = pygame.image.load(image)
+
+    def type(self):
+        return 'game_object'
+
+    def color(self):
+        return "no_color"
 
     def draw(self, surface):
-        surface.blit(self.image, (self.rect.left, self.rect.top))
+        surface.blit(self.image, (self._rect.left, self._rect.top))
 
     def collidepoint(self, x, y):
         return self._rect.collidepoint(x, y)
