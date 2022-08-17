@@ -50,8 +50,6 @@ class Game:
                  soldier_image_filename, fieldsquare_red_image_filename, fieldsquare_blue_image_filename, frame_rate):
         self.background_image = pygame.image.load(back_image_filename)
         self.gamesquare_image = pygame.image.load(gamesquare_image_filename)
-        # self.capital_image = pygame.image.load(capital_image_filename)
-        # self.soldier_image = pygame.image.load(soldier_image_filename)
         self.fieldsquare_red_image = pygame.image.load(fieldsquare_red_image_filename)
         self.fieldsquare_blue_image = pygame.image.load(fieldsquare_blue_image_filename)
         self.frame_rate = frame_rate
@@ -88,8 +86,13 @@ class Game:
 
         for y in range(0, 599, 40):
             for x in range(0, 799, 40):
-                if not ((x == 18 * 40 or x == 19 * 40 or x == 0 or x == 1 * 40) and (
-                        y == 6 * 40 or y == 7 * 40 or y == 8 * 40)):
+                if (x in [18*40, 19*40]) and (y in [6*40, 7*40, 8*40]):
+                    self.fieldsquare_blue = Fieldsquare_blue(x, y)
+                    self.objects.append(self.fieldsquare_blue)
+                elif (x in [0, 1*40]) and (y in [6*40, 7*40, 8*40]):
+                    self.fieldsquare_red = Fieldsquare_red(x, y)
+                    self.objects.append(self.fieldsquare_red)
+                else:
                     self.fieldsquare_neutral = Fieldsquare_neutral(x, y)
                     self.objects.append(self.fieldsquare_neutral)
 
@@ -115,27 +118,6 @@ class Game:
         self.spawn_soldier_button_clicked = Spawn_soldier_button_clicked(160, 480)
         self.spawn_factory_button = Spawn_factory_button(500, 480)
         self.spawn_factory_button_clicked = Spawn_factory_button_clicked(500, 480)
-
-        self.fieldsquare_blue = Fieldsquare_blue(18 * 40, 6 * 40)
-        self.objects.append(self.fieldsquare_blue)
-        self.fieldsquare_blue = Fieldsquare_blue(18 * 40, 7 * 40)
-        self.objects.append(self.fieldsquare_blue)
-        self.fieldsquare_blue = Fieldsquare_blue(18 * 40, 8 * 40)
-        self.objects.append(self.fieldsquare_blue)
-        self.fieldsquare_blue = Fieldsquare_blue(19 * 40, 6 * 40)
-        self.objects.append(self.fieldsquare_blue)
-        self.fieldsquare_blue = Fieldsquare_blue(19 * 40, 8 * 40)
-        self.objects.append(self.fieldsquare_blue)
-        self.fieldsquare_red = Fieldsquare_red(1 * 40, 6 * 40)
-        self.objects.append(self.fieldsquare_red)
-        self.fieldsquare_red = Fieldsquare_red(1 * 40, 7 * 40)
-        self.objects.append(self.fieldsquare_red)
-        self.fieldsquare_red = Fieldsquare_red(1 * 40, 8 * 40)
-        self.objects.append(self.fieldsquare_red)
-        self.fieldsquare_red = Fieldsquare_red(0 * 40, 6 * 40)
-        self.objects.append(self.fieldsquare_red)
-        self.fieldsquare_red = Fieldsquare_red(0 * 40, 8 * 40)
-        self.objects.append(self.fieldsquare_red)
 
         self.soldier_blue_clicked = None
         self.soldier_red_clicked = None
@@ -321,7 +303,7 @@ class Game:
                     self.do_move_soldier_conditions(obj, self.soldier_blue_clicked)
                 elif color == 'red':
                     self.do_move_soldier_conditions(obj, self.soldier_red_clicked)
-            elif obj.type() == 'capital' or obj.type() == 'factory' or obj.type() == 'soldier':
+            elif obj.type() in ['capital', 'factory', 'soldier']:
                 self.fieldsquare_others_anim(obj.x, obj.y)
 
     def do_move_soldier_conditions(self, fieldsquare, soldier):
@@ -346,26 +328,43 @@ class Game:
 
     def attack_soldier_conditions(self, color):
         for i in self.objects:
-            if color == 'blue':
-                self.do_attack_soldier_conditions(i, self.soldier_blue_clicked)
-            elif color == 'red':
-                self.do_attack_soldier_conditions(i, self.soldier_red_clicked)
+            if i.type() == 'fieldsquare':
+                if color == 'blue':
+                    self.do_attack_soldier_conditions(i, self.soldier_blue_clicked, 'red')
+                elif color == 'red':
+                    self.do_attack_soldier_conditions(i, self.soldier_red_clicked, 'blue')
+            elif i.type() not in ['textobject', 'pointer']:
+                self.fieldsquare_others_anim(i.x, i.y)
         for anim1 in self.anims[::-1]:
             if anim1.anim_type() == 'choose_fieldsquare':
                 for anim2 in self.anims[::-1]:
                     if anim2.anim_type() == 'fieldsquare_other' and anim1.x == anim2.x and anim1.y == anim2.y:
                         self.anims.remove(anim2)
 
-    def do_attack_soldier_conditions(self, i, soldier):
-        if (i.type() == 'soldier' or i.type() == 'factory') and i.color() == 'red' and (
+    def do_attack_soldier_conditions(self, i, soldier, enemy_color):
+        if (
                 i.x // 40 == soldier.x // 40 + 1
                 or i.x // 40 == soldier.x // 40 - 1
                 or i.y // 40 == soldier.y // 40 + 1
                 or i.y // 40 == soldier.y // 40 - 1) and not (
                 i.x // 40 != soldier.x // 40 and i.y // 40 != soldier.y // 40):
-            self.fieldsquare_choose_anim(i.x, i.y)
-        elif i.type() != 'textobject' and i.type() != 'pointer' and i.type() != 'soldier':
-            self.fieldsquare_others_anim(i.x, i.y)
+            for obj in self.objects:
+                if obj.type() in ['capital', 'factory',
+                                  'soldier'] and obj.color() == enemy_color and obj.x == i.x and obj.y == i.y:
+                    self.is_building_intersection = True
+            if self.is_building_intersection:
+                self.fieldsquare_choose_anim(i.x, i.y)
+            else:
+                self.fieldsquare_others_anim(i.x, i.y)
+            self.is_building_intersection
+        else:
+            for obj in self.objects:
+                if obj.type() in ['capital', 'factory',
+                                  'soldier'] and obj.x == i.x and obj.y == i.y:
+                    self.is_building_intersection = True
+            if not self.is_building_intersection:
+                self.fieldsquare_others_anim(i.x, i.y)
+            self.is_building_intersection = False
 
     def handle_events(self):
         def create_soldier_buttons(a, b):
@@ -895,9 +894,6 @@ class Game:
             # while not self.next_turn:
             self.surface.blit(self.background_image, (0, 0))
             self.surface.blit(self.gamesquare_image, (200, 200))
-            '''for y in range(0, 599, 40):
-                for x in range(0, 799, 40):
-                    self.surface.blit(self.gamesquare_image, (x, y))'''
 
             # self.surface.blit(self.capital_image, (0, 280))
             # self.surface.blit(self.capital_image, (760, 280))
