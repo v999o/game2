@@ -26,14 +26,8 @@ class TextObject(GameObject):
             pos = (self.x, self.y)
         surface.blit(text_surface, pos)
 
-    def newturn(self):
-        pass
-
     def collidepoint(self, x, y):
         return False
-
-    def update(self):
-        pass
 
     def __get_surface(self):
         return self.__font.render(self.__text_func(), False, self.__color)

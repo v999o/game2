@@ -35,8 +35,7 @@ from buttons_capital import Spawn_factory_button_clicked
 from field_objects import Fieldsquare_red
 from field_objects import Fieldsquare_blue
 from field_objects import Fieldsquare_neutral
-from field_objects import Blue_turn_pointer
-from field_objects import Red_turn_pointer
+from field_objects import TurnPointer
 from field_objects import Fieldsquare_choose
 from field_objects import Fieldsquare_other
 from collections import defaultdict
@@ -95,8 +94,8 @@ class Game:
                     self.fieldsquare_neutral = Fieldsquare_neutral(x, y)
                     self.objects.append(self.fieldsquare_neutral)
 
-        self.blue_turn_pointer = Blue_turn_pointer(400, 10)
-        self.red_turn_pointer = Red_turn_pointer(400, 10)
+        self.blue_turn_pointer = TurnPointer(400, 10, 'blue')
+        self.red_turn_pointer = TurnPointer(400, 10, 'red')
         self.objects.append(self.blue_turn_pointer)
 
         self.capital_red = Capital_red(0, 280)
@@ -870,18 +869,18 @@ class Game:
                 self.objects.remove(anim)
 
     def do_keydown_next_turn(self):
-        if not self.next_turn and not self.soldier_buttons and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none':  # переход хода к красным
-            self.next_turn = True
-            self.balance_blue += self.income_blue
-            self.objects.remove(self.blue_turn_pointer)
-            self.objects.append(self.red_turn_pointer)
-        elif not self.soldier_buttons and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none':  # переход хода к синим
-            for i in self.objects:
-                i.newturn()
-            self.balance_red += self.income_red
-            self.next_turn = False
-            self.objects.append(self.blue_turn_pointer)
-            self.objects.remove(self.red_turn_pointer)
+        if not self.soldier_buttons and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none':
+            if not self.next_turn:  # переход хода к красным
+                self.balance_blue += self.income_blue
+                self.objects.remove(self.blue_turn_pointer)
+                self.objects.append(self.red_turn_pointer)
+            else:  # переход хода к синим
+                for i in self.objects:
+                    i.newturn()
+                self.balance_red += self.income_red
+                self.objects.append(self.blue_turn_pointer)
+                self.objects.remove(self.red_turn_pointer)
+            self.next_turn = not self.next_turn
 
     def do_keydown_escape(self):
         if not self.next_turn:

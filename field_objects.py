@@ -71,29 +71,13 @@ class Fieldsquare_other(GameObject):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
 
-class Blue_turn_pointer(GameObject):
-    def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2_blue_turn_pointer.png')
+class TurnPointer(GameObject):
+    def __init__(self, x, y, color):
+        super().__init__(x, y, 40, 40, 'game2images/g2_' + color + '_turn_pointer.png')
+        self.__color = color
 
     def color(self):
-        return 'blue'
-
-    def draw(self, surface):
-        surface.blit(self.image, (self._rect.x, self._rect.y))
-
-    def type(self):
-        return 'pointer'
-
-
-class Red_turn_pointer(GameObject):
-    def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2_red_turn_pointer.png')
-
-    def color(self):
-        return 'red'
-
-    def draw(self, surface):
-        surface.blit(self.image, (self._rect.x, self._rect.y))
+        return self.__color
 
     def type(self):
         return 'pointer'
