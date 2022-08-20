@@ -885,32 +885,20 @@ class Game:
 
     def do_keydown_escape(self):
         if not self.next_turn:
-            if self.capital_buttons:
-                self.escape_capital_1()
+            self.__do_escape('blue')
+        else:
+            self.__do_escape('red')
+        self.delete_fieldsquares()
 
-            if self.soldier_buttons:
-                self.escape_soldier_1('blue')
-
-            if self.soldier_actions != 'none':
-                self.escape_soldier_2('blue')
-
-            if self.capital_actions != 'none':
-                self.escape_capital_2()
-            self.delete_fieldsquares()
-
-        elif self.next_turn:
-            if self.capital_buttons:
-                self.escape_capital_1()
-
-            if self.soldier_buttons:
-                self.escape_soldier_1('red')
-
-            if self.soldier_actions != 'none':
-                self.escape_soldier_2('red')
-
-            if self.capital_actions != 'none':
-                self.escape_capital_2()
-            self.delete_fieldsquares()
+    def __do_escape(self, color):
+        if self.capital_buttons:
+            self.escape_capital_1()
+        if self.soldier_buttons:
+            self.escape_soldier_1(color)
+        if self.soldier_actions != 'none':
+            self.escape_soldier_2(color)
+        if self.capital_actions != 'none':
+            self.escape_capital_2()
 
     def draw(self):
         for o in self.objects:
