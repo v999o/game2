@@ -46,8 +46,7 @@ from gameobject import GameObject
 class Game:
     objects: List[Union[GameObject]]
 
-    def __init__(self, caption, width, height, back_image_filename, gamesquare_image_filename, capital_image_filename,
-                 soldier_image_filename, fieldsquare_red_image_filename, fieldsquare_blue_image_filename, frame_rate):
+    def __init__(self, caption, width, height, back_image_filename, gamesquare_image_filename, fieldsquare_red_image_filename, fieldsquare_blue_image_filename, frame_rate):
         self.background_image = pygame.image.load(back_image_filename)
         self.gamesquare_image = pygame.image.load(gamesquare_image_filename)
         self.fieldsquare_red_image = pygame.image.load(fieldsquare_red_image_filename)
@@ -350,13 +349,51 @@ class Game:
                 i.x // 40 != soldier.x // 40 and i.y // 40 != soldier.y // 40):
             for obj in self.objects:
                 if obj.type() in ['capital', 'factory',
-                                  'soldier'] and obj.color() == enemy_color and obj.x == i.x and obj.y == i.y:
+                                  'soldier'] and obj.x == i.x and obj.y == i.y:
                     self.is_building_intersection = True
-            if self.is_building_intersection:
-                self.fieldsquare_choose_anim(i.x, i.y)
-            else:
+                    if obj.color() == enemy_color:
+                        self.fieldsquare_choose_anim(i.x, i.y)
+                        break
+            if not self.is_building_intersection:
                 self.fieldsquare_others_anim(i.x, i.y)
-            self.is_building_intersection
+            self.is_building_intersection = False
+        else:
+            for obj in self.objects:
+                if obj.type() in ['capital', 'factory',
+                                  'soldier'] and obj.x == i.x and obj.y == i.y:
+                    self.is_building_intersection = True
+            if not self.is_building_intersection:
+                self.fieldsquare_others_anim(i.x, i.y)
+            self.is_building_intersection = False
+
+    def capture_soldier_conditions(self, color):
+        for i in self.objects:
+            if i.type() == 'fieldsquare':
+                if color == 'blue':
+                    self.do_capture_soldier_conditions(i, self.soldier_blue_clicked, 'blue')
+                elif color == 'red':
+                    self.do_capture_soldier_conditions(i, self.soldier_red_clicked, 'red')
+            elif i.type() in ['soldier', 'factory', 'capital']:
+                self.fieldsquare_others_anim(i.x, i.y)
+        for anim1 in self.anims[::-1]:
+            if anim1.anim_type() == 'choose_fieldsquare':
+                for anim2 in self.anims[::-1]:
+                    if anim2.anim_type() == 'fieldsquare_other' and anim1.x == anim2.x and anim1.y == anim2.y:
+                        self.anims.remove(anim1)
+
+    def do_capture_soldier_conditions(self, i, soldier, color):
+        if (i.x // 40 == soldier.x // 40 + 1
+                or i.x // 40 == soldier.x // 40 - 1
+                or i.y // 40 == soldier.y // 40 + 1
+                or i.y // 40 == soldier.y // 40 - 1) and not (
+                i.x // 40 != soldier.x // 40 and i.y // 40 != soldier.y // 40) and i.color() != color:
+            for obj in self.objects:
+                if obj.type() in ['capital', 'factory',
+                                  'soldier'] and obj.x == i.x and obj.y == i.y:
+                    self.is_building_intersection = True
+            if not self.is_building_intersection:
+                self.fieldsquare_choose_anim(i.x, i.y)
+            self.is_building_intersection = False
         else:
             for obj in self.objects:
                 if obj.type() in ['capital', 'factory',
@@ -598,23 +635,10 @@ class Game:
                         self.attack_soldier_conditions('blue')
                         for anim in self.anims:
                             self.objects.append(anim)
+
                     elif self.is_capture_button_clicked:
                         self.is_soldier_buttons_clicked('is_capture_button_clicked')
-                        for i in self.objects:
-                            if i.type() == 'fieldsquare' and i.color() != 'blue' and (
-                                    i.x // 40 == self.soldier_blue_clicked.x // 40 + 1
-                                    or i.x // 40 == self.soldier_blue_clicked.x // 40 - 1
-                                    or i.y // 40 == self.soldier_blue_clicked.y // 40 + 1
-                                    or i.y // 40 == self.soldier_blue_clicked.y // 40 - 1) and not (
-                                    i.x // 40 != self.soldier_blue_clicked.x // 40 and i.y // 40 != self.soldier_blue_clicked.y // 40):
-                                self.fieldsquare_choose_anim(i.x, i.y)
-                            elif i.type() != 'textobject' and i.type() != 'pointer':
-                                self.fieldsquare_others_anim(i.x, i.y)
-                        for anim1 in self.anims[::-1]:
-                            if anim1.anim_type() == 'choose_fieldsquare':
-                                for anim2 in self.anims[::-1]:
-                                    if anim2.anim_type() == 'fieldsquare_other' and anim1.x == anim2.x and anim1.y == anim2.y:
-                                        self.anims.remove(anim1)
+                        self.capture_soldier_conditions('blue')
                         for anim in self.anims:
                             self.objects.append(anim)
 
@@ -747,7 +771,9 @@ class Game:
                             self.objects.append(anim)
                     elif self.is_capture_button_clicked:
                         self.is_soldier_buttons_clicked('is_capture_button_clicked')
-
+                        self.capture_soldier_conditions('red')
+                        for anim in self.anims:
+                            self.objects.append(anim)
                     elif self.soldier_actions == 'move_soldier':
                         if (mouse_x // 40 == self.soldier_red_clicked.x // 40 + 1
                             or mouse_x // 40 == self.soldier_red_clicked.x // 40 - 1
@@ -884,6 +910,7 @@ class Game:
 
             if self.capital_actions != 'none':
                 self.escape_capital_2()
+            self.delete_fieldsquares()
 
     def draw(self):
         for o in self.objects:
