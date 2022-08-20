@@ -14,10 +14,7 @@ from soldier import Soldier_blue
 from soldier import Soldier_blue_clicked
 from soldier import Soldier_red
 from soldier import Soldier_red_clicked
-from buildings import Capital_blue
-from buildings import Capital_blue_clicked
-from buildings import Capital_red
-from buildings import Capital_red_clicked
+from buildings import Capital
 from buildings import Factory_blue
 from buildings import Factory_red
 from bgforbuttons import Bg_for_button
@@ -98,11 +95,10 @@ class Game:
         self.red_turn_pointer = TurnPointer(400, 10, 'red')
         self.objects.append(self.blue_turn_pointer)
 
-        self.capital_red = Capital_red(0, 280)
+        self.capital_red = Capital(0, 280, 'red')
         self.objects.append(self.capital_red)
-        self.capital_blue = Capital_blue(760, 280)
+        self.capital_blue = Capital(760, 280, 'blue')
         self.objects.append(self.capital_blue)
-        self.capital_clicked = Capital_blue_clicked(0, 280)
 
         self.bg_for_buttons = Bg_for_button(0, 440)
         self.bg_for_buttons_capital = Bg_for_buttons_capital(0, 0)
@@ -235,11 +231,15 @@ class Game:
         self.is_spawn_soldier_button_clicked = False
         self.is_spawn_factory_button_clicked = False
 
+    def unclick_capital(self):
+        self.capital_red.clicked = False
+        self.capital_blue.clicked = False
+
     def escape_capital_1(self):
         self.objects.remove(self.bg_for_buttons_capital)
         self.objects.remove(self.spawn_soldier_button)
         self.objects.remove(self.spawn_factory_button)
-        self.objects.remove(self.capital_clicked)
+        self.unclick_capital()
         self.capital_buttons = False
         if self.is_spawn_soldier_button_clicked:
             self.objects.remove(self.spawn_soldier_button_clicked)
@@ -249,7 +249,7 @@ class Game:
             self.is_spawn_factory_button_clicked = False
 
     def escape_capital_2(self):
-        self.objects.remove(self.capital_clicked)
+        self.unclick_capital()
         self.capital_actions = 'none'
 
     def escape_soldier_1(self, color):
@@ -450,17 +450,7 @@ class Game:
             self.spawn_factory_button_clicked = Spawn_factory_button_clicked(self.spawn_factory_button.x,
                                                                              self.spawn_factory_button.y)
             self.objects.append(self.spawn_factory_button)
-
-        def capital_click(color):
             self.capital_buttons = True
-            if color == 'blue':
-                self.capital_clicked = Capital_blue_clicked(760, 280)
-            elif color == 'red':
-                self.capital_clicked = Capital_red_clicked(0, 280)
-            else:
-                return 
-            self.objects.append(self.capital_clicked)
-            self.create_capital_click_anim(self.capital_clicked.x, self.capital_clicked.y, color)
 
         mouse_x = pygame.mouse.get_pos()[0]
         mouse_y = pygame.mouse.get_pos()[1]
@@ -513,7 +503,9 @@ class Game:
                 mouse_y = event.pos[1]
                 if not self.next_turn:
                     if self.capital_blue.collidepoint(mouse_x, mouse_y) and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none' and not self.soldier_buttons:
-                        capital_click('blue')
+                        # capital_click('blue')
+                        self.capital_blue.clicked = True
+                        self.create_capital_click_anim(self.capital_blue.x, self.capital_blue.y, 'blue')
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
@@ -605,7 +597,7 @@ class Game:
                     elif self.capital_actions == 'spawn_soldier' and self.balance_blue >= 10:
                         for j in self.objects:
                             if j.type() == 'choose_fieldsquare' and j.collidepoint(mouse_x, mouse_y):
-                                self.objects.remove(self.capital_clicked)
+                                self.unclick_capital()
                                 soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.objects.append(soldier_blue)
                                 self.capital_actions = 'none'
@@ -615,7 +607,7 @@ class Game:
                     elif self.capital_actions == 'spawn_factory' and self.balance_blue >= 12:
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and i.collidepoint(mouse_x, mouse_y):
-                                self.objects.remove(self.capital_clicked)
+                                self.unclick_capital()
                                 factory_blue = Factory_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.objects.append(factory_blue)
                                 self.capital_actions = 'none'
@@ -722,7 +714,8 @@ class Game:
 
                 else:  # ход красных
                     if self.capital_red.collidepoint(mouse_x, mouse_y) and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none' and not self.soldier_buttons:
-                        capital_click('red')
+                        self.capital_red.clicked = True
+                        self.create_capital_click_anim(self.capital_red.x, self.capital_red.y, 'red')
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
@@ -744,14 +737,14 @@ class Game:
                                         self.objects.append(soldier_red)
                                         self.capital_actions = 'none'
                                         self.balance_red -= 10
-                                        self.objects.remove(self.capital_clicked)
+                                        self.unclick_capital()
                                         break
 
                     elif self.capital_actions == 'spawn_factory' and self.balance_red >= 12:
                         for i in self.objects:
                             if i.type() == 'fieldsquare' and i.collidepoint(mouse_x,
                                                                             mouse_y) and i.color() == 'red':
-                                self.objects.remove(self.capital_clicked)
+                                self.unclick_capital()
                                 factory_red = Factory_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.objects.append(factory_red)
                                 self.capital_actions = 'none'

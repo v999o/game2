@@ -8,7 +8,7 @@ class GameObject:
         if image is None:
             self.image = None
         else:
-            self.image = pygame.image.load(image)
+            self.image = self._load_image(image)
 
     def type(self):
         return 'game_object'
@@ -27,6 +27,10 @@ class GameObject:
 
     def update(self):
         pass
+
+    @staticmethod
+    def _load_image(image):
+        return pygame.image.load(image)
 
     @property
     def x(self):
