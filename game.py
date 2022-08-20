@@ -415,7 +415,7 @@ class Game:
                 b = b
             elif b > 530:
                 b = 530
-            self.bg_for_buttons = Bg_for_button(a, b)
+            self.bg_for_buttons = Bg_for_button(a, (b//40+1) * 40)
             self.objects.append(self.bg_for_buttons)
             self.attack_button = Attack_button(self.bg_for_buttons.x + 10, self.bg_for_buttons.y + 10)
             self.attack_button_clicked = Attack_button_clicked(self.attack_button.x, self.attack_button.y)
@@ -439,7 +439,7 @@ class Game:
                 b = b
             elif b > 530:
                 b = 530
-            self.bg_for_buttons_capital = Bg_for_buttons_capital(a, b)
+            self.bg_for_buttons_capital = Bg_for_buttons_capital(a, (b//40+1)*40)
             self.objects.append(self.bg_for_buttons_capital)
             self.spawn_soldier_button = Spawn_soldier_button(self.bg_for_buttons_capital.x + 10,
                                                              self.bg_for_buttons_capital.y + 10)
