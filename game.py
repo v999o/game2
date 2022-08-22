@@ -3,8 +3,7 @@ from typing import List, Union
 import pygame
 import config as c
 from text_object import TextObject
-from animations import Soldier_blue_click_anim
-from animations import Soldier_red_click_anim
+from animations import SoldierAnim
 from animations import Choose_fieldsquare_anim
 from animations import Fieldsquares_others_anim
 from soldier import Soldier
@@ -159,12 +158,7 @@ class Game:
         self.objects.append(income_label_red)
 
     def create_soldier_click_anim(self, x, y, color):
-        if color == 'blue':
-            anim = Soldier_blue_click_anim(x, y)
-        elif color == 'red':
-            anim = Soldier_red_click_anim(x, y)
-        else:
-            return
+        anim = SoldierAnim(x, y, color)
         self.anims.append(anim)
         self.objects.append(anim)
 

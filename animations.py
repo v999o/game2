@@ -43,28 +43,17 @@ class Animation(GameObject):
         self.life = self.max_life
 
 
-class Soldier_blue_click_anim(Animation):
-    def __init__(self, x, y):
-        super(Soldier_blue_click_anim, self).__init__(x, y, 'game2images/g2soldier_blue_clickanim1.png',
-                                                      'game2images/g2soldier_blue_clickanim2.png',
-                                                      'game2images/g2soldier_blue_clickanim3.png',
-                                                      'game2images/g2soldier_blue_clickanim4.png',
-                                                      'game2images/g2soldier_blue_clickanim5.png', 25)
+class SoldierAnim(Animation):
+    def __init__(self, x, y, color):
+        super(SoldierAnim, self).__init__(x, y, 'game2images/g2soldier_' + color + '_clickanim1.png',
+                                          'game2images/g2soldier_' + color + '_clickanim2.png',
+                                          'game2images/g2soldier_' + color + '_clickanim3.png',
+                                          'game2images/g2soldier_' + color + '_clickanim4.png',
+                                          'game2images/g2soldier_' + color + '_clickanim5.png', 25)
+        self.__color = color
 
     def anim_type(self):
-        return 'soldier_blue_click_anim'
-
-
-class Soldier_red_click_anim(Animation):
-    def __init__(self, x, y):
-        super(Soldier_red_click_anim, self).__init__(x, y, 'game2images/g2soldier_red_clickanim1.png',
-                                                     'game2images/g2soldier_red_clickanim2.png',
-                                                     'game2images/g2soldier_red_clickanim3.png',
-                                                     'game2images/g2soldier_red_clickanim4.png',
-                                                     'game2images/g2soldier_red_clickanim5.png', 25)
-
-    def anim_type(self):
-        return 'soldier_red_click_anim'
+        return 'soldier_' + self.__color + '_click_anim'
 
 
 class Choose_fieldsquare_anim(Animation):
