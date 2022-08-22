@@ -36,6 +36,14 @@ class GameObject:
     def x(self):
         return self._rect.x
 
+    @x.setter
+    def x(self, value):
+        self._rect.x = value
+
     @property
     def y(self):
         return self._rect.y
+
+    @y.setter
+    def y(self, value):
+        self._rect.y = value

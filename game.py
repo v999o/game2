@@ -8,9 +8,7 @@ from animations import Choose_fieldsquare_anim
 from animations import Fieldsquares_others_anim
 from soldier import Soldier
 from soldier import Soldier_blue
-from soldier import Soldier_blue_clicked
 from soldier import Soldier_red
-from soldier import Soldier_red_clicked
 from buildings import Capital
 from buildings import Factory_blue
 from buildings import Factory_red
@@ -234,15 +232,13 @@ class Game:
         self.unclick_capital()
         self.capital_actions = 'none'
 
-    def escape_soldier_1(self, color):
-        if color == 'blue':
-            soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
-            self.objects.append(soldier_blue)
-            self.objects.remove(self.soldier_blue_clicked)
-        elif color == 'red':
-            soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
-            self.objects.append(soldier_red)
-            self.objects.remove(self.soldier_red_clicked)
+    def escape_soldier_1(self):
+        if self.soldier_blue_clicked is not None:
+            self.soldier_blue_clicked.clicked = False
+            self.soldier_blue_clicked = None
+        if self.soldier_red_clicked is not None:
+            self.soldier_red_clicked.clicked = False
+            self.soldier_red_clicked = None
         self.objects.remove(self.bg_for_buttons)
         self.objects.remove(self.move_button)
         self.objects.remove(self.attack_button)
@@ -259,15 +255,13 @@ class Game:
         self.soldier_buttons = False
         self.counter = False
 
-    def escape_soldier_2(self, color):
-        if color == 'blue':
-            soldier_blue = Soldier_blue(self.soldier_blue_clicked.x, self.soldier_blue_clicked.y)
-            self.objects.append(soldier_blue)
-            self.objects.remove(self.soldier_blue_clicked)
-        elif color == 'red':
-            soldier_red = Soldier_red(self.soldier_red_clicked.x, self.soldier_red_clicked.y)
-            self.objects.append(soldier_red)
-            self.objects.remove(self.soldier_red_clicked)
+    def escape_soldier_2(self):
+        if self.soldier_blue_clicked is not None:
+            self.soldier_blue_clicked.clicked = False
+            self.soldier_blue_clicked = None
+        if self.soldier_red_clicked is not None:
+            self.soldier_red_clicked.clicked = False
+            self.soldier_red_clicked = None
         self.soldier_actions = 'none'
         self.counter = False
 
@@ -616,10 +610,7 @@ class Game:
                     elif self.soldier_actions == 'move_soldier':
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and mouse_x // 40 == i.x // 40 and mouse_y // 40 == i.y // 40:
-                                soldier_blue = Soldier_blue((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                soldier_blue.move_left -= 1
-                                self.objects.append(soldier_blue)
-                                self.objects.remove(self.soldier_blue_clicked)
+                                self.soldier_blue_clicked.move((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.soldier_actions = 'none'
                                 self.delete_fieldsquares()
 
@@ -684,11 +675,8 @@ class Game:
                                     self.remover = i
                                     self.counter = True
                         if self.counter and self.soldier_actions == 'none':
-                            self.soldier_blue_clicked = Soldier_blue_clicked((mouse_x // 40) * 40,
-                                                                             (mouse_y // 40) * 40)
-                            self.objects.append(self.soldier_blue_clicked)
-                            self.create_soldier_click_anim((mouse_x // 40) * 40, (mouse_y // 40) * 40, 'blue')
-                            self.objects.remove(self.remover)
+                            self.soldier_blue_clicked = self.remover
+                            self.soldier_blue_clicked.clicked = True
                             create_soldier_buttons(mouse_x, mouse_y)
                             self.soldier_buttons = True
 
@@ -754,11 +742,9 @@ class Game:
 
                             for i in self.objects:
                                 if i.type() == 'fieldsquare' and i.collidepoint(mouse_x, mouse_y):
-                                    soldier_red = Soldier_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
-                                    soldier_red.move_left -= 1
-                                    self.objects.append(soldier_red)
-                                    self.objects.remove(self.soldier_red_clicked)
+                                    self.soldier_red_clicked.move((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                     self.soldier_actions = 'none'
+                                    self.delete_fieldsquares()
 
                     elif self.soldier_actions == 'attack_soldier':
                         if not (mouse_x // 40 > self.soldier_red_clicked.x // 40 + 1
@@ -821,11 +807,13 @@ class Game:
                                     self.remover = i
                                     self.counter = True
                         if self.counter:
-                            self.soldier_red_clicked = Soldier_red_clicked((mouse_x // 40) * 40,
-                                                                           (mouse_y // 40) * 40)
-                            self.objects.append(self.soldier_red_clicked)
-                            self.objects.remove(self.remover)
-                            self.create_soldier_click_anim((mouse_x // 40) * 40, (mouse_y // 40) * 40, 'red')
+                            # self.soldier_red_clicked = Soldier_red_clicked((mouse_x // 40) * 40,
+                            #                                                (mouse_y // 40) * 40)
+                            # self.objects.append(self.soldier_red_clicked)
+                            # self.objects.remove(self.remover)
+                            # self.create_soldier_click_anim((mouse_x // 40) * 40, (mouse_y // 40) * 40, 'red')
+                            self.soldier_red_clicked = self.remover
+                            self.soldier_red_clicked.clicked = True
                             create_soldier_buttons(mouse_x, mouse_y)
                             self.soldier_buttons = True
 
@@ -865,9 +853,9 @@ class Game:
         if self.capital_buttons:
             self.escape_capital_1()
         if self.soldier_buttons:
-            self.escape_soldier_1(color)
+            self.escape_soldier_1()
         if self.soldier_actions != 'none':
-            self.escape_soldier_2(color)
+            self.escape_soldier_2()
         if self.capital_actions != 'none':
             self.escape_capital_2()
 
