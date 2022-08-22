@@ -7,8 +7,6 @@ from animations import Soldier_blue_click_anim
 from animations import Soldier_red_click_anim
 from animations import Choose_fieldsquare_anim
 from animations import Fieldsquares_others_anim
-from animations import Capital_blue_click_anim
-from animations import Capital_red_click_anim
 from soldier import Soldier
 from soldier import Soldier_blue
 from soldier import Soldier_blue_clicked
@@ -177,16 +175,6 @@ class Game:
     def fieldsquare_others_anim(self, x, y):
         anim = Fieldsquares_others_anim(x, y)
         self.anims.append(anim)
-
-    def create_capital_click_anim(self, x, y, color):
-        if color == 'blue':
-            anim = Capital_blue_click_anim(x, y)
-        elif color == 'red':
-            anim = Capital_red_click_anim(x, y)
-        else:
-            return
-        self.anims.append(anim)
-        self.objects.append(anim)
 
     def update(self):
         for o in self.objects:
@@ -503,9 +491,7 @@ class Game:
                 mouse_y = event.pos[1]
                 if not self.next_turn:
                     if self.capital_blue.collidepoint(mouse_x, mouse_y) and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none' and not self.soldier_buttons:
-                        # capital_click('blue')
                         self.capital_blue.clicked = True
-                        self.create_capital_click_anim(self.capital_blue.x, self.capital_blue.y, 'blue')
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
@@ -576,7 +562,7 @@ class Game:
                                         else:
                                             if self.s == 0:
                                                 for obj in self.objects:
-                                                    if  obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
+                                                    if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                                         self.is_building_intersection = True
                                                 if not self.is_building_intersection:
                                                     self.fieldsquare_others_anim(i.x, i.y)
@@ -715,7 +701,6 @@ class Game:
                 else:  # ход красных
                     if self.capital_red.collidepoint(mouse_x, mouse_y) and not self.capital_buttons and self.capital_actions == 'none' and self.soldier_actions == 'none' and not self.soldier_buttons:
                         self.capital_red.clicked = True
-                        self.create_capital_click_anim(self.capital_red.x, self.capital_red.y, 'red')
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')

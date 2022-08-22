@@ -39,6 +39,9 @@ class Animation(GameObject):
             self.life = self.life - 1
         super().update()
 
+    def restart(self):
+        self.life = self.max_life
+
 
 class Soldier_blue_click_anim(Animation):
     def __init__(self, x, y):
@@ -88,25 +91,10 @@ class Fieldsquares_others_anim(Animation):
         return 'fieldsquare_other'
 
 
-class Capital_blue_click_anim(Animation):
-    def __init__(self, x, y):
-        super(Capital_blue_click_anim, self).__init__(x, y, 'game2images/g2capital_blue_clickanim1.png',
-                                                      'game2images/g2capital_blue_clickanim2.png',
-                                                      'game2images/g2capital_blue_clickanim3.png',
-                                                      'game2images/g2capital_blue_clickanim4.png',
-                                                      'game2images/g2capital_blue_clickanim5.png', 25)
-
-    def anim_type(self):
-        return 'capital_blue_click_anim'
-
-
-class Capital_red_click_anim(Animation):
-    def __init__(self, x, y):
-        super(Capital_red_click_anim, self).__init__(x, y, 'game2images/g2capital_red_clickanim_1.png',
-                                                     'game2images/g2capital_red_clickanim_2.png',
-                                                     'game2images/g2capital_red_clickanim_3.png',
-                                                     'game2images/g2capital_red_clickanim_4.png',
-                                                     'game2images/g2capital_red_clickanim_5.png', 25)
-
-    def anim_type(self):
-        return 'capital_red_click_anim'
+class CapitalAnim(Animation):
+    def __init__(self, x, y, color):
+        super(CapitalAnim, self).__init__(x, y, 'game2images/g2capital_clickanim_1_' + color + '.png',
+                                          'game2images/g2capital_clickanim_2_' + color + '.png',
+                                          'game2images/g2capital_clickanim_3_' + color + '.png',
+                                          'game2images/g2capital_clickanim_4_' + color + '.png',
+                                          'game2images/g2capital_clickanim_5_' + color + '.png', 25)
