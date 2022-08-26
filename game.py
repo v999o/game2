@@ -621,22 +621,14 @@ class Game:
                                     if j.type() == 'factory' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
                                         self.income_red -= 6
-                                        soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
-                                                                    self.soldier_blue_clicked.y)
-                                        soldier_blue.move_left -= 1
-                                        self.objects.append(soldier_blue)
-                                        self.objects.remove(self.soldier_blue_clicked)
+                                        self.soldier_blue_clicked.attack()
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
                                     if j.type() == 'soldier' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        soldier_blue = Soldier_blue(self.soldier_blue_clicked.x,
-                                                                    self.soldier_blue_clicked.y)
-                                        soldier_blue.move_left -= 1
-                                        self.objects.append(soldier_blue)
-                                        self.objects.remove(self.soldier_blue_clicked)
+                                        self.soldier_blue_clicked.attack()
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
