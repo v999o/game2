@@ -87,3 +87,18 @@ class Capture_button_clicked(GameObject):
 
     def type(self):
         pass
+
+class Win_label_blue(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 600, 400, 'game2images/g2_win_label_blue.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (100, 100))
+
+
+class Win_label_red(GameObject):
+    def __init__(self, x, y):
+        super().__init__(x, y, 600, 400, 'game2images/g2_win_label_red.png')
+
+    def draw(self, surface):
+        surface.blit(self.image, (100, 100))

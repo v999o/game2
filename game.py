@@ -20,6 +20,7 @@ from bgforbuttons import Attack_button
 from bgforbuttons import Attack_button_clicked
 from bgforbuttons import Capture_button
 from bgforbuttons import Capture_button_clicked
+from bgforbuttons import Win_label_blue, Win_label_red
 from buttons_capital import Spawn_soldier_button
 from buttons_capital import Spawn_soldier_button_clicked
 from buttons_capital import Spawn_factory_button
@@ -149,6 +150,14 @@ class Game:
                                       c.font_name,
                                       c.font_size)
         self.objects.append(income_label_red)
+
+    def create_win_label(self, color):
+        if color == 'blue':
+            self.win_label_blue = Win_label_blue(100, 100)
+            self.objects.append(self.win_label_blue)
+        else:
+            self.win_label_red = Win_label_red(100, 100)
+            self.objects.append(self.win_label_red)
 
     def create_soldier_click_anim(self, x, y, color):
         anim = SoldierAnim(x, y, color)
@@ -637,6 +646,14 @@ class Game:
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
+                                    if j.type() == 'capital' and j.color() == 'red' and i.x == j.x and i.y == j.y:
+                                        self.objects.remove(j)
+                                        self.soldier_blue_clicked.attack()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
+                                        self.create_win_label('blue')
+                                        break
 
                     elif self.soldier_actions == 'capture_soldier':
                         for i in self.objects:
@@ -752,6 +769,14 @@ class Game:
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
+                                        break
+                                    if j.type() == 'capital' and j.color() == 'blue' and i.x == j.x and i.y == j.y:
+                                        self.objects.remove(j)
+                                        self.soldier_red_clicked.attack()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
+                                        self.create_win_label('red')
                                         break
 
                     elif self.soldier_actions == 'capture_soldier':
