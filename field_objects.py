@@ -14,17 +14,34 @@ class Fieldsquare(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
-class Fieldsquare_neutral(Fieldsquare):
-    def __init__(self, x, y):
-        super().__init__(x, y, 'neutral', 'game2images/g2fieldsquare_v2.png')
+    def change_color(self, color):
+        self._color = color
 
-class Fieldsquare_red(Fieldsquare):
-    def __init__(self, x, y):
-        super().__init__(x, y, 'red', 'game2images/g2fieldsquare_red.png')
+class FieldsquareUniversal(GameObject):
+    def __init__(self, x, y, color):
+        super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_v2.png')
+        self._color = color
+        self.__red_image = GameObject._load_image('game2images/g2fieldsquare_red.png')
+        self.__blue_image = GameObject._load_image('game2images/g2fieldsquare_blue.png')
 
-class Fieldsquare_blue(Fieldsquare):
-    def __init__(self, x, y):
-        super().__init__(x, y, 'blue', 'game2images/g2fieldsquare_blue.png')
+
+    def type(self):
+        return 'fieldsquare'
+
+    def color(self):
+        return self._color
+
+    def draw(self, surface):
+        if self._color == 'neutral':
+            surface.blit(self.image, (self._rect.x, self._rect.y))
+        elif self._color == 'red':
+            surface.blit(self.__red_image, (self._rect.x, self._rect.y))
+        else:
+            surface.blit(self.__blue_image, (self._rect.x, self._rect.y))
+
+    def change_color(self, color):
+        self._color = color
+
 
 class Fieldsquare_choose(GameObject):
     def __init__(self, x, y):

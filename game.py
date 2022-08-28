@@ -24,9 +24,7 @@ from buttons_capital import Spawn_soldier_button
 from buttons_capital import Spawn_soldier_button_clicked
 from buttons_capital import Spawn_factory_button
 from buttons_capital import Spawn_factory_button_clicked
-from field_objects import Fieldsquare_red
-from field_objects import Fieldsquare_blue
-from field_objects import Fieldsquare_neutral
+from field_objects import FieldsquareUniversal
 from field_objects import TurnPointer
 from field_objects import Fieldsquare_choose
 from field_objects import Fieldsquare_other
@@ -77,14 +75,11 @@ class Game:
         for y in range(0, 599, 40):
             for x in range(0, 799, 40):
                 if (x in [18*40, 19*40]) and (y in [6*40, 7*40, 8*40]):
-                    self.fieldsquare_blue = Fieldsquare_blue(x, y)
-                    self.objects.append(self.fieldsquare_blue)
+                    self.objects.append(FieldsquareUniversal(x, y, 'blue'))
                 elif (x in [0, 1*40]) and (y in [6*40, 7*40, 8*40]):
-                    self.fieldsquare_red = Fieldsquare_red(x, y)
-                    self.objects.append(self.fieldsquare_red)
+                    self.objects.append(FieldsquareUniversal(x, y, 'red'))
                 else:
-                    self.fieldsquare_neutral = Fieldsquare_neutral(x, y)
-                    self.objects.append(self.fieldsquare_neutral)
+                    self.objects.append(FieldsquareUniversal(x, y, 'neutral'))
 
         self.blue_turn_pointer = TurnPointer(400, 10, 'blue')
         self.red_turn_pointer = TurnPointer(400, 10, 'red')
@@ -269,6 +264,90 @@ class Game:
         for obj in self.objects[::-1]:
             if obj.type() == 'choose_fieldsquare' or obj.type() == 'fieldsquare_other':
                 self.objects.remove(obj)
+
+    def spawn_soldier_conditions(self, color):
+        for j in self.objects:
+            if j.type() in ['factory', 'capital'] and j.color() == color:
+                for i in self.objects:
+                    if i.type() == 'fieldsquare':
+                        if i.color() == color and ((
+                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
+                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
+                            for obj in self.objects:
+                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
+                                    self.is_building_intersection = True
+                            if not self.is_building_intersection:
+                                if self.s == 0:
+                                    self.fieldsquare_choose_anim(i.x, i.y)
+                                else:
+                                    for k in self.anims[::-1]:
+                                        if k.x == i.x and k.y == i.y and k.anim_type() == 'fieldsquare_other':
+                                            self.anims.remove(k)
+                                            self.fieldsquare_choose_anim(i.x, i.y)
+                            self.is_building_intersection = False
+                        else:
+                            if self.s == 0:
+                                for obj in self.objects:
+                                    if obj.type() in ['capital', 'factory',
+                                                      'soldier'] and obj.x == i.x and obj.y == i.y:
+                                        self.is_building_intersection = True
+                                if not self.is_building_intersection:
+                                    self.fieldsquare_others_anim(i.x, i.y)
+                                self.is_building_intersection = False
+                    elif i.type() in ['capital', 'factory', 'soldier']:
+                        if self.s == 0:
+                            self.fieldsquare_others_anim(i.x, i.y)
+                self.s += 1
+        self.s = 0
+        for anim1 in self.anims[::-1]:
+            if anim1.anim_type() == 'fieldsquare_other':
+                for anim2 in self.anims[::-1]:
+                    if anim2.anim_type() == 'choose_fieldsquare' and anim1.x == anim2.x and anim1.y == anim2.y:
+                        self.anims.remove(anim2)
+
+    def spawn_factory_conditions(self, color):
+        for j in self.objects:
+            if j.type() in ['factory', 'capital'] and j.color() == color:
+                for i in self.objects:
+                    if i.type() == 'fieldsquare':
+                        if i.color() == color and ((
+                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
+                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
+                            for obj in self.objects:
+                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
+                                    self.is_building_intersection = True
+                            if not self.is_building_intersection:
+                                if self.s == 0:
+                                    self.fieldsquare_choose_anim(i.x, i.y)
+                                else:
+                                    for k in self.anims[::-1]:
+                                        if k.x == i.x and k.y == i.y and k.anim_type() == 'fieldsquare_other':
+                                            self.anims.remove(k)
+                                            self.fieldsquare_choose_anim(i.x, i.y)
+                            self.is_building_intersection = False
+                        else:
+                            if self.s == 0:
+                                for obj in self.objects:
+                                    if obj.type() in ['capital', 'factory',
+                                                      'soldier'] and obj.x == i.x and obj.y == i.y:
+                                        self.is_building_intersection = True
+                                if not self.is_building_intersection:
+                                    self.fieldsquare_others_anim(i.x, i.y)
+                                self.is_building_intersection = False
+                    elif i.type() in ['capital', 'factory', 'soldier']:
+                        if self.s == 0:
+                            self.fieldsquare_others_anim(i.x, i.y)
+                self.s += 1
+        self.s = 0
+        for anim1 in self.anims[::-1]:
+            if anim1.anim_type() == 'fieldsquare_other':
+                for anim2 in self.anims[::-1]:
+                    if anim2.anim_type() == 'choose_fieldsquare' and anim1.x == anim2.x and anim1.y == anim2.y:
+                        self.anims.remove(anim2)
 
     def move_soldier_conditions(self, color):
         for obj in self.objects:
@@ -483,88 +562,12 @@ class Game:
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
-                        for j in self.objects:
-                            if j.type() in ['factory', 'capital'] and j.color() == 'blue':
-                                for i in self.objects:
-                                    if i.type() == 'fieldsquare':
-                                        if i.color() == 'blue' and ((
-                                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
-                                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
-                                            for obj in self.objects:
-                                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
-                                                    self.is_building_intersection = True
-                                            if not self.is_building_intersection:
-                                                if self.s == 0:
-                                                    self.fieldsquare_choose_anim(i.x, i.y)
-                                                else:
-                                                    for k in self.anims[::-1]:
-                                                        if k.x == i.x and k.y == i.y and k.anim_type() == 'fieldsquare_other':
-                                                            self.anims.remove(k)
-                                                            self.fieldsquare_choose_anim(i.x, i.y)
-                                            self.is_building_intersection = False
-                                        else:
-                                            if self.s == 0:
-                                                for obj in self.objects:
-                                                    if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
-                                                        self.is_building_intersection = True
-                                                if not self.is_building_intersection:
-                                                    self.fieldsquare_others_anim(i.x, i.y)
-                                                self.is_building_intersection = False
-                                    elif i.type() in ['capital', 'factory', 'soldier']:
-                                        if self.s == 0:
-                                            self.fieldsquare_others_anim(i.x, i.y)
-                                self.s += 1
-                        self.s = 0
-                        for anim1 in self.anims[::-1]:
-                            if anim1.anim_type() == 'fieldsquare_other':
-                                for anim2 in self.anims[::-1]:
-                                    if anim2.anim_type() == 'choose_fieldsquare' and anim1.x == anim2.x and anim1.y == anim2.y:
-                                        self.anims.remove(anim2)
+                        self.spawn_soldier_conditions('blue')
                         for anim in self.anims:
                             self.objects.append(anim)
                     elif self.capital_buttons and self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_factory_button_clicked')
-                        for j in self.objects:
-                            if j.type() in ['factory', 'capital'] and j.color() == 'blue':
-                                for i in self.objects:
-                                    if i.type() == 'fieldsquare':
-                                        if i.color() == 'blue' and ((
-                                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
-                                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
-                                            for obj in self.objects:
-                                                if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
-                                                    self.is_building_intersection = True
-                                            if not self.is_building_intersection:
-                                                if self.s == 0:
-                                                    self.fieldsquare_choose_anim(i.x, i.y)
-                                                else:
-                                                    for k in self.anims[::-1]:
-                                                        if k.x == i.x and k.y == i.y and k.anim_type() == 'fieldsquare_other':
-                                                            self.anims.remove(k)
-                                                            self.fieldsquare_choose_anim(i.x, i.y)
-                                            self.is_building_intersection = False
-                                        else:
-                                            if self.s == 0:
-                                                for obj in self.objects:
-                                                    if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
-                                                        self.is_building_intersection = True
-                                                if not self.is_building_intersection:
-                                                    self.fieldsquare_others_anim(i.x, i.y)
-                                                self.is_building_intersection = False
-                                    elif i.type() in ['capital', 'factory', 'soldier']:
-                                        if self.s == 0:
-                                            self.fieldsquare_others_anim(i.x, i.y)
-                                self.s += 1
-                        self.s = 0
-                        for anim1 in self.anims[::-1]:
-                            if anim1.anim_type() == 'fieldsquare_other':
-                                for anim2 in self.anims[::-1]:
-                                    if anim2.anim_type() == 'choose_fieldsquare' and anim1.x == anim2.x and anim1.y == anim2.y:
-                                        self.anims.remove(anim2)
+                        self.spawn_factory_conditions('blue')
                         for anim in self.anims:
                             self.objects.append(anim)
 
@@ -576,8 +579,8 @@ class Game:
                                 self.objects.append(soldier_blue)
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 10
+                                self.delete_fieldsquares()
                                 break
-                        self.delete_fieldsquares()
                     elif self.capital_actions == 'spawn_factory' and self.balance_blue >= 12:
                         for i in self.objects:
                             if i.type() == 'choose_fieldsquare' and i.collidepoint(mouse_x, mouse_y):
@@ -587,7 +590,8 @@ class Game:
                                 self.capital_actions = 'none'
                                 self.balance_blue -= 12
                                 self.income_blue += 6
-                        self.delete_fieldsquares()
+                                self.delete_fieldsquares()
+                                break
 
                     elif self.is_move_button_clicked:
                         self.is_soldier_buttons_clicked('is_move_button_clicked')
@@ -640,21 +644,21 @@ class Game:
                                 for j in self.objects[::-1]:
                                     if j.type() == 'fieldsquare' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.income_red -= 1
-                                        self.fieldsquare_blue = Fieldsquare_blue(j.x, j.y)
-                                        self.objects.append(self.fieldsquare_blue)
-                                        self.objects.remove(j)
+                                        j.change_color('blue')
                                         self.income_blue += 1
+                                        self.soldier_blue_clicked.capture()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
                                         break
                                     elif j.type() == 'fieldsquare' and j.color() == 'neutral' and i.x == j.x and i.y == j.y:
-                                        self.fieldsquare_blue = Fieldsquare_blue(j.x, j.y)
-                                        self.objects.append(self.fieldsquare_blue)
-                                        self.objects.remove(j)
+                                        j.change_color('blue')
                                         self.income_blue += 1
+                                        self.soldier_blue_clicked.capture()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
                                         break
-                        self.soldier_blue_clicked.capture()
-                        self.soldier_actions = 'none'
-                        self.counter = False
-                        self.delete_fieldsquares()
 
                     elif not self.counter:
                         for i in self.objects:
@@ -674,37 +678,39 @@ class Game:
                         create_capital_buttons(mouse_x, mouse_y)
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
+                        self.spawn_soldier_conditions('red')
+                        for anim in self.anims:
+                            self.objects.append(anim)
                     elif self.capital_buttons and self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_factory_button_clicked')
+                        self.spawn_factory_conditions('red')
+                        for anim in self.anims:
+                            self.objects.append(anim)
+
 
                     elif self.capital_actions == 'spawn_soldier' and self.balance_red >= 10:
                         for j in self.objects:
-                            if j.type() == 'fieldsquare' and j.collidepoint(mouse_x,
-                                                                            mouse_y) and j.color() == 'red':
-                                for i in self.objects:
-                                    if (i.type() == 'factory' or i.type() == 'capital') and i.color() == 'red' and ((
-                                                                                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                                                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
-                                                                                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
-                                        soldier_red = Soldier_red((mouse_x // 40) * 40,
-                                                                  (mouse_y // 40) * 40)
-                                        self.objects.append(soldier_red)
-                                        self.capital_actions = 'none'
-                                        self.balance_red -= 10
-                                        self.unclick_capital()
-                                        break
+                            if j.type() == 'choose_fieldsquare' and j.collidepoint(mouse_x, mouse_y):
+                                self.unclick_capital()
+                                soldier_red = Soldier_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
+                                self.objects.append(soldier_red)
+                                self.capital_actions = 'none'
+                                self.balance_blue -= 10
+                                self.delete_fieldsquares()
+                                break
 
                     elif self.capital_actions == 'spawn_factory' and self.balance_red >= 12:
                         for i in self.objects:
-                            if i.type() == 'fieldsquare' and i.collidepoint(mouse_x,
-                                                                            mouse_y) and i.color() == 'red':
+                            if i.type() == 'choose_fieldsquare' and i.collidepoint(mouse_x,
+                                                                            mouse_y):
                                 self.unclick_capital()
                                 factory_red = Factory_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.objects.append(factory_red)
                                 self.capital_actions = 'none'
                                 self.balance_red -= 12
                                 self.income_red += 6
+                                self.delete_fieldsquares()
+                                break
 
                     elif self.is_move_button_clicked:
                         self.is_soldier_buttons_clicked('is_move_button_clicked')
@@ -754,21 +760,21 @@ class Game:
                                 for j in self.objects[::-1]:
                                     if j.type() == 'fieldsquare' and j.color() == 'blue' and i.x == j.x and i.y == j.y:
                                         self.income_blue -= 1
-                                        self.fieldsquare_red = Fieldsquare_red(j.x, j.y)
-                                        self.objects.append(self.fieldsquare_red)
-                                        self.objects.remove(j)
+                                        j.change_color('red')
                                         self.income_red += 1
+                                        self.soldier_red_clicked.capture()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
                                         break
                                     elif j.type() == 'fieldsquare' and j.color() == 'neutral' and i.x == j.x and i.y == j.y:
-                                        self.fieldsquare_red = Fieldsquare_red(j.x, j.y)
-                                        self.objects.append(self.fieldsquare_red)
-                                        self.objects.remove(j)
+                                        j.change_color('red')
                                         self.income_red += 1
+                                        self.soldier_red_clicked.capture()
+                                        self.soldier_actions = 'none'
+                                        self.counter = False
+                                        self.delete_fieldsquares()
                                         break
-                        self.soldier_red_clicked.capture()
-                        self.soldier_actions = 'none'
-                        self.counter = False
-                        self.delete_fieldsquares()
 
                     elif not self.counter:
                         for i in self.objects:
