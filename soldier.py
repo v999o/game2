@@ -1,6 +1,6 @@
 from animations import SoldierAnim
 from gameobject import GameObject
-
+import pygame
 
 class Soldier(GameObject):
     def __init__(self, x, y, color, avatar):
@@ -9,6 +9,8 @@ class Soldier(GameObject):
         self.move_left = 1
         self.__anim = SoldierAnim(x, y, color)
         self.__clicked = False
+        self._image_blue_ready = GameObject._load_image('game2images/g2soldier_blue_new_ready.png')
+        self._image_red_ready = GameObject._load_image('game2images/g2soldier_red_new_ready.png')
 
     def __set_clicked(self, value):
         self.__clicked = value
@@ -29,6 +31,11 @@ class Soldier(GameObject):
                 surface.blit(self.__anim.image5, (self._rect.x, self._rect.y))
             else:
                 self.__anim.draw(surface)
+        elif self.move_left > 0:
+            if self._color == 'blue':
+                surface.blit(self._image_blue_ready, (self._rect.x, self._rect.y))
+            else:
+                surface.blit(self._image_red_ready, (self._rect.x, self._rect.y))
         else:
             surface.blit(self.image, (self._rect.x, self._rect.y))
 
