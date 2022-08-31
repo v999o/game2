@@ -1,7 +1,7 @@
 import colors
 
-screen_width = 800
-screen_height = 600
+screen_width = 480
+screen_height = 360
 
 background_image = 'game2images/g2field.png'
 gamesquare_image = 'game2images/g2fieldsquare_v2.png'
@@ -35,8 +35,8 @@ initial_lives = 1
 lives_right_offset = 85
 lives_offset = screen_width - lives_right_offset
 
-balance_blue_offset = 720
-income_blue_offset = 760
+balance_blue_offset = screen_width - 80
+income_blue_offset = screen_width - 40
 balance_red_offset = 5
 income_red_offset = 40
 

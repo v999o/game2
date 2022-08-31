@@ -2,6 +2,7 @@ from typing import List, Union
 
 import pygame
 import config as c
+import math
 from text_object import TextObject
 from animations import SoldierAnim
 from animations import Choose_fieldsquare_anim
@@ -37,7 +38,7 @@ class Game:
     objects: List[Union[GameObject]]
 
     def __init__(self, caption, width, height, back_image_filename, gamesquare_image_filename, fieldsquare_red_image_filename, fieldsquare_blue_image_filename, frame_rate):
-        self.background_image = pygame.image.load(back_image_filename)
+        #self.background_image = pygame.image.load(back_image_filename)
         self.gamesquare_image = pygame.image.load(gamesquare_image_filename)
         self.fieldsquare_red_image = pygame.image.load(fieldsquare_red_image_filename)
         self.fieldsquare_blue_image = pygame.image.load(fieldsquare_blue_image_filename)
@@ -47,7 +48,6 @@ class Game:
         self.capital_squares = []
         self.colors = []
         self.anims = []
-        self.is_square_repeating = False
         self.pause = True
         self.counter = False
         self.remover = None
@@ -66,29 +66,27 @@ class Game:
 
         self.is_building_intersection = False
 
-        self.is_first_pointer = True
-
         self.balance_blue = 10
         self.income_blue = 10
         self.balance_red = 10
         self.income_red = 10
 
-        for y in range(0, 599, 40):
-            for x in range(0, 799, 40):
-                if (x in [18*40, 19*40]) and (y in [6*40, 7*40, 8*40]):
+        for y in range(0, c.screen_height, 40):
+            for x in range(0, c.screen_width, 40):
+                if (x in [c.screen_width - 80, c.screen_width - 40]) and (y in [c.screen_height//2-60, c.screen_height//2-20, c.screen_height//2+20]):
                     self.objects.append(FieldsquareUniversal(x, y, 'blue'))
-                elif (x in [0, 1*40]) and (y in [6*40, 7*40, 8*40]):
+                elif (x in [0, 1*40]) and (y in [c.screen_height//2-60, c.screen_height//2-20, c.screen_height//2+20]):
                     self.objects.append(FieldsquareUniversal(x, y, 'red'))
                 else:
                     self.objects.append(FieldsquareUniversal(x, y, 'neutral'))
 
-        self.blue_turn_pointer = TurnPointer(400, 10, 'blue')
-        self.red_turn_pointer = TurnPointer(400, 10, 'red')
+        self.blue_turn_pointer = TurnPointer(c.screen_width//2, 10, 'blue')
+        self.red_turn_pointer = TurnPointer(c.screen_width//2, 10, 'red')
         self.objects.append(self.blue_turn_pointer)
 
-        self.capital_red = Capital(0, 280, 'red')
+        self.capital_red = Capital(0, c.screen_height//2-20, 'red')
         self.objects.append(self.capital_red)
-        self.capital_blue = Capital(760, 280, 'blue')
+        self.capital_blue = Capital(c.screen_width-40, c.screen_height//2-20, 'blue')
         self.objects.append(self.capital_blue)
 
         self.bg_for_buttons = Bg_for_button(0, 440)
@@ -279,11 +277,13 @@ class Game:
             if j.type() in ['factory', 'capital'] and j.color() == color:
                 for i in self.objects:
                     if i.type() == 'fieldsquare':
-                        if i.color() == color and ((
+                        '''if i.color() == color and ((
                                                             j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
                                                             j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
                                                             j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
-                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
+                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):'''
+                        if i.color() == color and (math.fabs(j.x//40-i.x//40) in [0, 1] and math.fabs(j.y//40-i.y//40) in [0, 1]):
+
                             for obj in self.objects:
                                 if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                     self.is_building_intersection = True
@@ -321,11 +321,12 @@ class Game:
             if j.type() in ['factory', 'capital'] and j.color() == color:
                 for i in self.objects:
                     if i.type() == 'fieldsquare':
-                        if i.color() == color and ((
-                                                            j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                            j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
-                                                            j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
-                                                            j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):
+                        '''if i.color() == color and ((
+                                                                                    j.x // 40 + 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                                                    j.x // 40 - 1 == i.x // 40 and j.y // 40 == i.y // 40) or (
+                                                                                    j.x // 40 == i.x // 40 and j.y // 40 + 1 == i.y // 40) or (
+                                                                                    j.x // 40 == i.x // 40 and j.y // 40 - 1 == i.y // 40)):'''
+                        if i.color() == color and (math.fabs(j.x//40-i.x//40) in [0, 1] and math.fabs(j.y//40-i.y//40) in [0, 1]):
                             for obj in self.objects:
                                 if obj.type() in ['capital', 'factory', 'soldier'] and obj.x == i.x and obj.y == i.y:
                                     self.is_building_intersection = True
@@ -712,7 +713,7 @@ class Game:
                                 soldier_red = Soldier_red((mouse_x // 40) * 40, (mouse_y // 40) * 40)
                                 self.objects.append(soldier_red)
                                 self.capital_actions = 'none'
-                                self.balance_blue -= 10
+                                self.balance_red -= 10
                                 self.delete_fieldsquares()
                                 break
 
@@ -862,8 +863,8 @@ class Game:
     def run(self):
         while 1:
             # while not self.next_turn:
-            self.surface.blit(self.background_image, (0, 0))
-            self.surface.blit(self.gamesquare_image, (200, 200))
+            # self.surface.blit(self.background_image, (0, 0))
+            # self.surface.blit(self.gamesquare_image, (200, 200))
 
             # self.surface.blit(self.capital_image, (0, 280))
             # self.surface.blit(self.capital_image, (760, 280))
