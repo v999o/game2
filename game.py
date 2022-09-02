@@ -469,17 +469,17 @@ class Game:
 
     def handle_events(self):
         def create_soldier_buttons(a, b):
-            if 705 >= a >= 95:
+            if c.screen_width-95 >= a >= 95:
                 a = a - 95
-            elif a > 705:
-                a = 610
+            elif a > c.screen_width-95:
+                a = c.screen_width-190
             elif a < 95:
                 a = 0
-            if b <= 530:
-                b = b
-            elif b > 530:
-                b = 530
-            self.bg_for_buttons = Bg_for_button(a, (b//40+1) * 40)
+            if (b//40+1)*40 <= c.screen_height-70:
+                b = (b//40+1)*40
+            elif (b//40+1)*40 > c.screen_height-70:
+                b = c.screen_height-70
+            self.bg_for_buttons = Bg_for_button(a, b)
             self.objects.append(self.bg_for_buttons)
             self.attack_button = Attack_button(self.bg_for_buttons.x + 10, self.bg_for_buttons.y + 10)
             self.attack_button_clicked = Attack_button_clicked(self.attack_button.x, self.attack_button.y)
@@ -493,17 +493,17 @@ class Game:
             self.objects.append(self.capture_button)
 
         def create_capital_buttons(a, b):
-            if 725 >= a >= 75:
+            if c.screen_width-75 >= a >= 75:
                 a = a - 75
-            elif a > 725:
-                a = 670
+            elif a > c.screen_width-75:
+                a = c.screen_width-130
             elif a < 95:
                 a = 0
-            if b <= 530:
-                b = b
-            elif b > 530:
-                b = 530
-            self.bg_for_buttons_capital = Bg_for_buttons_capital(a, (b//40+1)*40)
+            if (b//40+1)*40 <= c.screen_height-70:
+                b = (b//40+1)*40
+            elif b > c.screen_height-70:
+                b = c.screen_height-70
+            self.bg_for_buttons_capital = Bg_for_buttons_capital(a, b)
             self.objects.append(self.bg_for_buttons_capital)
             self.spawn_soldier_button = Spawn_soldier_button(self.bg_for_buttons_capital.x + 10,
                                                              self.bg_for_buttons_capital.y + 10)
@@ -635,21 +635,21 @@ class Game:
                                     if j.type() == 'factory' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
                                         self.income_red -= 6
-                                        self.soldier_blue_clicked.attack()
+                                        self.soldier_blue_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
                                     if j.type() == 'soldier' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        self.soldier_blue_clicked.attack()
+                                        self.soldier_blue_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
                                     if j.type() == 'capital' and j.color() == 'red' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        self.soldier_blue_clicked.attack()
+                                        self.soldier_blue_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
@@ -759,21 +759,21 @@ class Game:
                                     if j.type() == 'factory' and j.color() == 'blue' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
                                         self.income_red -= 6
-                                        self.soldier_red_clicked.attack()
+                                        self.soldier_red_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
                                     if j.type() == 'soldier' and j.color() == 'blue' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        self.soldier_red_clicked.attack()
+                                        self.soldier_red_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()
                                         break
                                     if j.type() == 'capital' and j.color() == 'blue' and i.x == j.x and i.y == j.y:
                                         self.objects.remove(j)
-                                        self.soldier_red_clicked.attack()
+                                        self.soldier_red_clicked.attack(i.x, i.y)
                                         self.soldier_actions = 'none'
                                         self.counter = False
                                         self.delete_fieldsquares()

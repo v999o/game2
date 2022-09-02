@@ -54,7 +54,11 @@ class Soldier(GameObject):
         self.clicked = False
         self.move_left -= 1
 
-    def attack(self):
+    def attack(self, x, y):
+        self.x = x
+        self.y = y
+        self.__anim.x = x
+        self.__anim.y = y
         self.clicked = False
         self.move_left -= 1
 
