@@ -49,7 +49,7 @@ class SoldierAnim(Animation):
                                           'game2images/g2soldier_' + color + '_clickanim2.png',
                                           'game2images/g2soldier_' + color + '_clickanim3.png',
                                           'game2images/g2soldier_' + color + '_clickanim4.png',
-                                          'game2images/g2soldier_' + color + '_clickanim5.png', 25)
+                                          'game2images/g2soldier_' + color + '_clickanim5.png', 10)
         self.__color = color
 
     def anim_type(self):

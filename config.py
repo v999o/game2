@@ -1,7 +1,7 @@
 import colors
 
-screen_width = 480
-screen_height = 360
+screen_width = 160
+screen_height = 280
 
 background_image = 'game2images/g2field.png'
 gamesquare_image = 'game2images/g2fieldsquare_v2.png'
@@ -31,6 +31,7 @@ status_offset_y = 5
 
 text_color1 = colors.BLUE
 text_color2 = colors.RED1
+text_color3 = colors.BLACK
 initial_lives = 1
 lives_right_offset = 85
 lives_offset = screen_width - lives_right_offset
