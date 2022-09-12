@@ -58,15 +58,65 @@ class SoldierAnim(Animation):
 
 class Choose_fieldsquare_anim(Animation):
     def __init__(self, x, y):
-        super(Choose_fieldsquare_anim, self).__init__(x, y, 'game2images/g2fieldsquare_choose_anim1.png',
-                                                      'game2images/g2fieldsquare_choose_anim2.png',
-                                                      'game2images/g2fieldsquare_choose_anim3.png',
-                                                      'game2images/g2fieldsquare_choose_anim4.png',
-                                                      'game2images/g2fieldsquare_choose_anim5.png', 20)
+        '''super(Choose_fieldsquare_anim, self).__init__(x, y, 'game2images/g2fieldsquare_choose_anim5.png',
+                                                      'game2images/g2fieldsquare_choose_anim5.png',
+                                                      'game2images/g2fieldsquare_choose_anim5.png',
+                                                      'game2images/g2fieldsquare_choose_anim5.png',
+                                                      'game2images/g2fieldsquare_choose_anim5.png', 20)'''
+
+        super(Choose_fieldsquare_anim, self).__init__(x, y, 'game2images/g2_choose_fieldsquare_v2.png',
+                                                      'game2images/g2_choose_fieldsquare_v2.png',
+                                                      'game2images/g2_choose_fieldsquare_v2.png',
+                                                      'game2images/g2_choose_fieldsquare_v2.png',
+                                                      'game2images/g2_choose_fieldsquare_v2.png', 20)
+
 
     def anim_type(self):
         return 'choose_fieldsquare'
 
+class C_a_up_anim(Animation):
+    def __init__(self, x, y):
+        super(C_a_up_anim, self).__init__(x, y, 'game2images/g2_c_a_up_1.png',
+                                                      'game2images/g2_c_a_up_2.png',
+                                                      'game2images/g2_c_a_up_3.png',
+                                                      'game2images/g2_c_a_up_4.png',
+                                                      'game2images/g2_c_a_up_5.png', 20)
+
+    def anim_type(self):
+        return 'c_a_up'
+
+class C_a_down_anim(Animation):
+    def __init__(self, x, y):
+        super(C_a_down_anim, self).__init__(x, y, 'game2images/g2_c_a_down_1.png',
+                                                      'game2images/g2_c_a_down_2.png',
+                                                      'game2images/g2_c_a_down_3.png',
+                                                      'game2images/g2_c_a_down_4.png',
+                                                      'game2images/g2_c_a_down_5.png', 20)
+
+    def anim_type(self):
+        return 'c_a_down'
+
+class C_a_right_anim(Animation):
+    def __init__(self, x, y):
+        super(C_a_right_anim, self).__init__(x, y, 'game2images/g2_c_a_right_1.png',
+                                                      'game2images/g2_c_a_right_2.png',
+                                                      'game2images/g2_c_a_right_3.png',
+                                                      'game2images/g2_c_a_right_4.png',
+                                                      'game2images/g2_c_a_right_5.png', 20)
+
+    def anim_type(self):
+        return 'c_a_right'
+
+class C_a_left_anim(Animation):
+    def __init__(self, x, y):
+        super(C_a_left_anim, self).__init__(x, y, 'game2images/g2_c_a_left_1.png',
+                                                      'game2images/g2_c_a_left_2.png',
+                                                      'game2images/g2_c_a_left_3.png',
+                                                      'game2images/g2_c_a_left_4.png',
+                                                      'game2images/g2_c_a_left_5.png', 20)
+
+    def anim_type(self):
+        return 'c_a_left'
 
 class Fieldsquares_others_anim(Animation):
     def __init__(self, x, y):

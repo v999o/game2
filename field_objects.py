@@ -70,6 +70,32 @@ class Fieldsquare_other(GameObject):
     def draw(self, surface):
         surface.blit(self.image, (self._rect.x, self._rect.y))
 
+class C_a(GameObject):
+    def __init__(self, x, y, image):
+        super().__init__(x, y, 40, 40, image)
+
+    def color(self):
+        return 'none'
+
+    def type(self):
+        return 'c_a'
+
+class C_a_up(C_a):
+    def __init__(self, x, y):
+        super().__init__(x, y, 'game2images/g2_c_a_up_5.png')
+
+class C_a_down(C_a):
+    def __init__(self, x, y):
+        super().__init__(x, y, 'game2images/g2_c_a_down_5.png')
+
+class C_a_right(C_a):
+    def __init__(self, x, y):
+        super().__init__(x, y, 'game2images/g2_c_a_right_5.png')
+
+class C_a_left(C_a):
+    def __init__(self, x, y):
+        super().__init__(x, y, 'game2images/g2_c_a_left_5.png')
+
 
 class TurnPointer(GameObject):
     def __init__(self, x, y, color):

@@ -1,7 +1,7 @@
 import colors
 
-screen_width = 160
-screen_height = 280
+screen_width = 400
+screen_height = 280+40
 
 background_image = 'game2images/g2field.png'
 gamesquare_image = 'game2images/g2fieldsquare_v2.png'

@@ -1,12 +1,16 @@
 from typing import List, Union
 
 import pygame
+from pygame.rect import Rect
+
+import config
 import config as c
 import math
 from text_object import TextObject
 from animations import SoldierAnim
 from animations import Choose_fieldsquare_anim
 from animations import Fieldsquares_others_anim
+from animations import C_a_up_anim, C_a_down_anim, C_a_right_anim, C_a_left_anim
 from soldier import Soldier
 from soldier import Soldier_blue
 from soldier import Soldier_red
@@ -30,6 +34,7 @@ from field_objects import FieldsquareUniversal
 from field_objects import TurnPointer
 from field_objects import Fieldsquare_choose
 from field_objects import Fieldsquare_other
+from field_objects import C_a_up, C_a_down, C_a_right, C_a_left
 from collections import defaultdict
 from gameobject import GameObject
 
@@ -77,11 +82,11 @@ class Game:
 
         self.Undo = []
 
-        for y in range(0, c.screen_height, 40):
+        for y in range(40, c.screen_height, 40):
             for x in range(0, c.screen_width, 40):
-                if (x in [c.screen_width - 80, c.screen_width - 40]) and (y in [c.screen_height//2-60, c.screen_height//2-20, c.screen_height//2+20]):
+                if (x in [c.screen_width - 80, c.screen_width - 40]) and (y in [((c.screen_height-40)//2-60)+40, ((c.screen_height-40)//2-20)+40, ((c.screen_height-40)//2+20)+40]):
                     self.objects.append(FieldsquareUniversal(x, y, 'blue'))
-                elif (x in [0, 1*40]) and (y in [c.screen_height//2-60, c.screen_height//2-20, c.screen_height//2+20]):
+                elif (x in [0, 1*40]) and (y in [((c.screen_height-40)//2-60)+40, ((c.screen_height-40)//2-20)+40, ((c.screen_height-40)//2+20)+40]):
                     self.objects.append(FieldsquareUniversal(x, y, 'red'))
                 else:
                     self.objects.append(FieldsquareUniversal(x, y, 'neutral'))
@@ -90,9 +95,9 @@ class Game:
         self.red_turn_pointer = TurnPointer(c.screen_width//2, 10, 'red')
         self.objects.append(self.blue_turn_pointer)
 
-        self.capital_red = Capital(0, c.screen_height//2-20, 'red')
+        self.capital_red = Capital(0, ((c.screen_height-40)//2-20)+40, 'red')
         self.objects.append(self.capital_red)
-        self.capital_blue = Capital(c.screen_width-40, c.screen_height//2-20, 'blue')
+        self.capital_blue = Capital(c.screen_width-40, ((c.screen_height-40)//2-20)+40, 'blue')
         self.objects.append(self.capital_blue)
 
         self.bg_for_buttons = Bg_for_button(0, 440)
@@ -256,9 +261,23 @@ class Game:
         self.soldier_actions = 'none'
         self.counter = False
 
+    def do_choose_animation(self):
+        for anim1 in self.anims:
+            if anim1.anim_type() == 'choose_fieldsquare':
+                for anim2 in self.anims:
+                    if anim2.x//40 == anim1.x//40+1 and anim2.y//40 == anim1.y//40 and anim2.anim_type() == 'fieldsquare_other':
+                        self.anims.append(C_a_right_anim(anim1.x, anim1.y))
+                    if anim2.x//40 == anim1.x//40-1 and anim2.y//40 == anim1.y//40 and anim2.anim_type() == 'fieldsquare_other':
+                        self.anims.append(C_a_left_anim(anim1.x, anim1.y))
+                    if anim2.x//40 == anim1.x//40 and anim2.y//40 == anim1.y//40+1 and anim2.anim_type() == 'fieldsquare_other':
+                        self.anims.append(C_a_down_anim(anim1.x, anim1.y))
+                    if anim2.x//40 == anim1.x//40 and anim2.y//40 == anim1.y//40-1 and anim2.anim_type() == 'fieldsquare_other':
+                        self.anims.append(C_a_up_anim(anim1.x, anim1.y))
+
+
     def delete_fieldsquares(self):
         for obj in self.objects[::-1]:
-            if obj.type() == 'choose_fieldsquare' or obj.type() == 'fieldsquare_other':
+            if obj.type() in ['fieldsquare_other', 'choose_fieldsquare', 'c_a']:
                 self.objects.remove(obj)
 
     def spawn_soldier_conditions(self, color):
@@ -597,6 +616,7 @@ class Game:
                     elif self.capital_buttons and self.spawn_soldier_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
                         self.is_capital_buttons_clicked('is_spawn_soldier_button_clicked')
                         self.spawn_soldier_conditions('blue')
+                        self.do_choose_animation()
                         for anim in self.anims:
                             self.objects.append(anim)
                     elif self.capital_buttons and self.spawn_factory_button_clicked.collidepoint(mouse_x, mouse_y) and not self.soldier_buttons:
@@ -697,9 +717,21 @@ class Game:
                 if anim.anim_type() == 'fieldsquare_other':
                     fieldsquare_other = Fieldsquare_other(anim.x, anim.y)
                     self.objects.append(fieldsquare_other)
-                elif anim.anim_type() == 'choose_fieldsquare':
+                elif anim.anim_type() == 'c_a_up':
+                    c_a_up = C_a_up(anim.x, anim.y)
+                    self.objects.append(c_a_up)
+                elif anim.anim_type() == 'c_a_down':
+                    c_a_down = C_a_down(anim.x, anim.y)
+                    self.objects.append(c_a_down)
+                elif anim.anim_type() == 'c_a_right':
+                    c_a_right = C_a_right(anim.x, anim.y)
+                    self.objects.append(c_a_right)
+                elif anim.anim_type() == 'c_a_left':
+                    c_a_left = C_a_left(anim.x, anim.y)
+                    self.objects.append(c_a_left)
+                '''elif anim.anim_type() == 'choose_fieldsquare':
                     fieldsquare_choose = Fieldsquare_choose(anim.x, anim.y)
-                    self.objects.append(fieldsquare_choose)
+                    self.objects.append(fieldsquare_choose)'''
                 self.anims.remove(anim)
                 self.objects.remove(anim)
 
@@ -735,6 +767,7 @@ class Game:
             self.escape_capital_2()
 
     def draw(self):
+        pygame.draw.rect(self.surface, (200, 200, 200), Rect(0, 0, config.screen_width, config.screen_height))
         for o in self.objects:
             o.draw(self.surface)
 
