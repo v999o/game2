@@ -45,7 +45,7 @@ class FieldsquareUniversal(GameObject):
 
 class Fieldsquare_choose(GameObject):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 40, 'game2images/g2fieldsquare_choose_anim5.png')
+        super().__init__(x, y, 40, 40, 'game2images/g2_choose_fieldsquare_v2.png')
 
     def color(self):
         return 'highlighted'

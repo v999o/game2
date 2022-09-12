@@ -729,9 +729,9 @@ class Game:
                 elif anim.anim_type() == 'c_a_left':
                     c_a_left = C_a_left(anim.x, anim.y)
                     self.objects.append(c_a_left)
-                '''elif anim.anim_type() == 'choose_fieldsquare':
+                elif anim.anim_type() == 'choose_fieldsquare':
                     fieldsquare_choose = Fieldsquare_choose(anim.x, anim.y)
-                    self.objects.append(fieldsquare_choose)'''
+                    self.objects.append(fieldsquare_choose)
                 self.anims.remove(anim)
                 self.objects.remove(anim)
 
