@@ -9,3 +9,10 @@ This project's code was originally based on my previous game "Spaceinsiders", wh
 `pygame-breakout` tutorial and repository:
 
 https://gitlab.com/the-gigi/pygame-breakout:
+
+## Improvements from my previous game
+
+- Improved sprite quality
+- Advanced tile animation system
+- Local multiplayer
+- System for determining available tiles
