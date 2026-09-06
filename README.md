@@ -10,7 +10,7 @@ This project's code was originally based on my previous game "Spaceinsiders", wh
 
 https://gitlab.com/the-gigi/pygame-breakout:
 
-## Improvements from my previous game
+## Improvements From my Previous Game
 
 - Improved sprite quality
 - Advanced tile animation system
